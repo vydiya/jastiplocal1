@@ -1,0 +1,37 @@
+/* custom-sidebar.css — override kecil untuk sidebar & icon */
+.left-panel .navbar .navbar-nav > li > a {
+  display: flex;
+  align-items: center;
+  gap: 12px;               /* jarak antara icon dan teks */
+  padding: 10px 18px;
+  color: #607d8b;          /* teks default */
+  font-size: 14px;
+}
+
+.left-panel .navbar .navbar-nav > li > a img {
+  width: 20px;
+  height: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Active state */
+.left-panel .navbar .navbar-nav > li.active > a,
+.left-panel .navbar .navbar-nav > li > a:hover {
+  color: #2b6fc6;          /* teks biru saat aktif/hover */
+  background: #f6fbff;
+  border-left: 3px solid #2b6fc6;
+}
+
+/* Jika ingin icon ikut berubah warna saat active/hover (SVG menggunakan currentColor) */
+.left-panel .navbar .navbar-nav > li > a img[color-change="true"] {
+  filter: none; /* default */
+}
+
+/* Responsive small tweak */
+@media (max-width: 1024px) {
+  .left-panel { width: 83px; }
+  .right-panel { margin-left: 83px; }
+  .left-panel .navbar .navbar-nav > li > a { gap: 8px; font-size: 0; }
+}
+

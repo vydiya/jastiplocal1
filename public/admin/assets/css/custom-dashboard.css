@@ -1,0 +1,61 @@
+/* public/admin/assets/css/custom-dashboard.css */
+/* Styling cards kecil pada dashboard (tampilan like image 1) */
+
+.small-stats-row { display:flex; gap:18px; margin-bottom:20px; flex-wrap:wrap; }
+
+.small-stat-card {
+  background:#fff;
+  border-radius:12px;
+  padding:18px;
+  box-shadow: 0 10px 30px rgba(14,30,37,0.05);
+  display:flex;
+  align-items:center;
+  min-width: 220px;
+  flex:1 1 220px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.small-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(14,30,37,0.06);
+}
+
+/* icon container */
+.small-stat-card .icon {
+  width:58px;
+  height:58px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-right:14px;
+  flex-shrink:0;
+}
+
+/* gunakan warna biru utama palet */
+.small-stat-card .icon svg,
+.small-stat-card .icon img { width:28px; height:28px; }
+
+/* warna ikon background — ganti jika mau */
+.bg-accent-1 { background: #B0D2EB; }
+.bg-accent-2 { background: #CCDBE6; }
+.bg-accent-3 { background: #18405C; color:#fff; }
+
+/* teks angka dan label */
+.small-stat-card .value {
+  font-size:20px;
+  font-weight:700;
+  color:#233241;
+  margin-bottom:3px;
+}
+.small-stat-card .label {
+  font-size:13px;
+  color:#77808a;
+}
+
+/* ukuran besar / full width card (optional) */
+.card-wide {
+  border-radius:12px;
+  padding:18px;
+  box-shadow: 0 10px 30px rgba(14,30,37,0.05);
+  background:#fff;
+}
