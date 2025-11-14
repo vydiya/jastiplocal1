@@ -3,68 +3,73 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User; // pakai model User bawaan Laravel (sesuaikan jika beda)
 
 class UserController extends Controller
 {
+    // GET /admin/pengguna
     public function index()
     {
-        $users = User::latest()->get();
+        $users = User::paginate(15);
         return view('admin.pengguna.index', compact('users'));
     }
 
+    // GET /admin/pengguna/create
     public function create()
     {
         return view('admin.pengguna.create');
     }
 
+    // POST /admin/pengguna
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'   => 'required',
-            'email'  => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'peran'  => 'required|in:admin,pengguna,jastiper'
+            'name' => 'required|string|max:255',
+            'email'=> 'required|email|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $data['password'] = Hash::make($data['password']);
-
+        $data['password'] = bcrypt($data['password']);
         User::create($data);
 
-        return redirect()->route('admin.pengguna.index')
-            ->with('success','Pengguna berhasil ditambahkan!');
+        return redirect()->route('admin.pengguna.index')->with('success','User created.');
     }
 
+    // GET /admin/pengguna/{pengguna}
+    public function show(User $pengguna)
+    {
+        return view('admin.pengguna.show', ['user' => $pengguna]);
+    }
+
+    // GET /admin/pengguna/{pengguna}/edit
     public function edit(User $pengguna)
     {
-        return view('admin.pengguna.edit', compact('pengguna'));
+        return view('admin.pengguna.edit', ['user' => $pengguna]);
     }
 
+    // PUT/PATCH /admin/pengguna/{pengguna}
     public function update(Request $request, User $pengguna)
     {
         $data = $request->validate([
-            'name'   => 'required',
-            'email'  => "required|email|unique:users,email,{$pengguna->id}",
-            'peran'  => 'required|in:admin,pengguna,jastiper'
+            'name' => 'required|string|max:255',
+            'email'=> 'required|email|unique:users,email,'.$pengguna->id,
+            // password optional
         ]);
 
-        if ($request->password) {
-            $data['password'] = Hash::make($request->password);
+        if($request->filled('password')){
+            $request->validate(['password' => 'string|min:6|confirmed']);
+            $data['password'] = bcrypt($request->password);
         }
 
         $pengguna->update($data);
-
-        return redirect()->route('admin.pengguna.index')
-            ->with('success','Pengguna berhasil diperbarui!');
+        return redirect()->route('admin.pengguna.index')->with('success','User updated.');
     }
 
+    // DELETE /admin/pengguna/{pengguna}
     public function destroy(User $pengguna)
     {
         $pengguna->delete();
-
-        return redirect()->route('admin.pengguna.index')
-            ->with('success','Pengguna berhasil dihapus!');
+        return redirect()->route('admin.pengguna.index')->with('success','User deleted.');
     }
 }

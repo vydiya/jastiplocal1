@@ -21,34 +21,35 @@
                     </a>
                 </li>
 
-                {{-- 2. Data Master --}}
-                <li class="menu-title">DATA MASTER</li>
-                <li class="{{ request()->is('admin/master/*') ? 'active' : '' }}">
-                    <a href="{{ url('admin/master') }}">
+                {{-- 2. Data Pengguna --}}
+                <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.pengguna.index') }}">
                         <img src="{{ asset('admin/assets/images/icons/data-master.svg') }}" alt="Data Master"
                             style="width:20px;margin-right:12px">
-                        Data Master
+                        Data Pengguna
                     </a>
-                    {{-- Jika mau dropdown sub-item (opsional), uncomment bagian bawah dan sesuaikan URL --}}
-                    {{--
-                    <ul class="sub-menu children">
-                        <li><a href="{{ url('admin/master/users') }}"><img
-                                        src="{{ asset('admin/assets/images/icons/users.svg') }}"
-                                        style="width:16px;margin-right:8px">Data Pengguna</a></li>
-                        <li><a href="{{ url('admin/master/merchants') }}"><img
-                                        src="{{ asset('admin/assets/images/icons/merchants.svg') }}"
-                                        style="width:16px;margin-right:8px">Data Jastiper</a></li>
-                        <li><a href="{{ url('admin/master/products') }}"><img
-                                        src="{{ asset('admin/assets/images/icons/products.svg') }}"
-                                        style="width:16px;margin-right:8px">Data Produk</a></li>
-                        <li><a href="{{ url('admin/master/payment-methods') }}"><img
-                                        src="{{ asset('admin/assets/images/icons/payment-methods.svg') }}"
-                                        style="width:16px;margin-right:8px">Metode Pembayaran</a></li>
-                        <li><a href="{{ url('admin/master/categories') }}"><img
-                                        src="{{ asset('admin/assets/images/icons/categories.svg') }}"
-                                        style="width:16px;margin-right:8px">Kategori Produk</a></li>
-                    </ul>
-                    --}}
+                </li>
+
+                {{-- Jika mau dropdown sub-item (opsional), uncomment bagian bawah dan sesuaikan URL --}}
+                {{--
+                <ul class="sub-menu children">
+                    <li><a href="{{ url('admin/master/users') }}"><img
+                                src="{{ asset('admin/assets/images/icons/users.svg') }}"
+                                style="width:16px;margin-right:8px">Data Pengguna</a></li>
+                    <li><a href="{{ url('admin/master/merchants') }}"><img
+                                src="{{ asset('admin/assets/images/icons/merchants.svg') }}"
+                                style="width:16px;margin-right:8px">Data Jastiper</a></li>
+                    <li><a href="{{ url('admin/master/products') }}"><img
+                                src="{{ asset('admin/assets/images/icons/products.svg') }}"
+                                style="width:16px;margin-right:8px">Data Produk</a></li>
+                    <li><a href="{{ url('admin/master/payment-methods') }}"><img
+                                src="{{ asset('admin/assets/images/icons/payment-methods.svg') }}"
+                                style="width:16px;margin-right:8px">Metode Pembayaran</a></li>
+                    <li><a href="{{ url('admin/master/categories') }}"><img
+                                src="{{ asset('admin/assets/images/icons/categories.svg') }}"
+                                style="width:16px;margin-right:8px">Kategori Produk</a></li>
+                </ul>
+                --}}
                 </li>
 
                 {{-- 3. Pesanan --}}
@@ -119,8 +120,7 @@
 
                 {{-- 10. Logout (LINK YANG SUDAH DIPERBAIKI) --}}
                 <li>
-                    <a href="#"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <img src="{{ asset('admin/assets/images/icons/logout.svg') }}" alt="Logout"
                             style="width:20px;margin-right:12px">
                         Logout

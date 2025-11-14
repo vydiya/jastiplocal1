@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <!-- mata luar -->
+  <path d="M12 64 C28 28, 100 28, 116 64 C100 100, 28 100, 12 64 Z"
+        stroke="#2b6fc6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- iris -->
+  <circle cx="64" cy="64" r="20" stroke="#2b6fc6" stroke-width="10" />
+  <!-- pupil (diisi) -->
+  <circle cx="64" cy="64" r="8" fill="#2b6fc6" />
+</svg>

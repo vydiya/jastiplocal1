@@ -1,0 +1,186 @@
+/* Custom styling untuk halaman pengguna */
+.user-table-card{
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  border-radius: 8px;
+  padding: 18px;
+  background:#fff;
+}
+
+/* search row */
+.user-controls {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+
+/* input pencarian */
+.user-search-input{
+  min-width:280px;
+  max-width:420px;
+  border-radius:8px;
+  padding:10px 14px;
+  border:1px solid #e6e9ef;
+  background:#fbfdff;
+  box-shadow: none;
+  font-size:14px;
+  color:#2b394f;
+}
+
+/* tombol primary (Add user) */
+.btn-add-user{
+  background: #2b6be6; /* warna biru serasi sidebar */
+  color:#fff;
+  border-radius:8px;
+  padding:10px 16px;
+  border: none;
+  font-weight:600;
+  font-size:14px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  height:42px;
+}
+
+/* tombol search kecil di samping input */
+.btn-search{
+  border-radius:8px;
+  padding:9px 14px;
+  border:1px solid #2b6be6;
+  background:transparent;
+  color:#2b6be6;
+  font-weight:600;
+  height:40px;
+}
+
+/* tabel */
+.table-custom{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 10px; /* jarak antar baris */
+  background:transparent;
+}
+
+/* baris data - tampak seperti card kecil */
+.table-custom tbody tr{
+  background: #f6f7f9;
+  border-radius:8px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+}
+
+/* agar border-radius terlihat pada td, gunakan overflow hidden pada tr */
+.table-custom tbody tr td:first-child{
+  border-top-left-radius:8px;
+  border-bottom-left-radius:8px;
+}
+.table-custom tbody tr td:last-child{
+  border-top-right-radius:8px;
+  border-bottom-right-radius:8px;
+}
+
+/* sel agar tidak terlalu tinggi */
+.table-custom td, .table-custom th{
+  padding:14px 16px;
+  vertical-align: middle;
+  border:none;
+  background:transparent;
+  color:#333;
+}
+
+/* header style */
+.table-custom thead th{
+  background:transparent;
+  color:#2b394f;
+  font-weight:700;
+  border-bottom:0;
+  padding:10px 16px;
+}
+
+/* kolom action rata kanan - ubah jadi horizontal (tombol sejajar) */
+.table-actions {
+  display:flex;
+  flex-direction:row;      /* sejajarkan tombol (bukan vertikal) */
+  gap:10px;                /* jarak antar tombol */
+  justify-content:flex-end;
+  align-items:center;
+}
+
+/* style tombol aksi (lebih besar agar teks tidak pecah) */
+.btn-action{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;       /* lebih luas */
+  border-radius:10px;
+  font-size:15px;          /* teks lebih besar */
+  border:1.5px solid #dbe9ff;
+  background: #fff;
+  color:#2b6be6;
+  box-shadow: 0 1px 0 rgba(43,107,230,0.04);
+  height:42px;             /* fix tinggi agar konsisten */
+  white-space:nowrap;      /* jangan pecah teks */
+  cursor:pointer;
+}
+
+/* icon di tombol (jika pakai <img> atau <svg>) */
+.btn-action img, .btn-action svg {
+  width:18px;
+  height:18px;
+  display:inline-block;
+}
+
+/* tombol hapus merah */
+.btn-action.del{
+  border-color:#f4c6c6;
+  color:#d04848;
+  background:#fff;
+}
+.btn-action.del:hover{
+  background:#fff0f0;
+}
+
+/* responsive: kecilkan padding & jadikan tombol baris tunggal membungkus */
+@media (max-width: 992px){
+  .user-controls { flex-direction:column; align-items:stretch; gap:8px; }
+  .table-custom td, .table-custom th{ padding:10px; }
+  .table-actions { justify-content:flex-start; gap:8px; flex-wrap:wrap; }
+  .btn-action { padding:8px 10px; font-size:14px; height:38px; }
+  .btn-add-user { height:40px; padding:9px 12px; }
+  .btn-search { height:38px; padding:8px 10px; }
+}
+
+/* mobile kecil */
+@media (max-width: 480px){
+  .user-search-input{ min-width:100%; max-width:100%; }
+  .table-custom { font-size:13px; }
+  .col-id{ width:64px; }
+}
+/* Judul Data Pengguna */
+.user-table-title{
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #f4b400;   /* kuning google-style */
+  padding-left: 4px;
+}
+/* HEADER TABEL – warna biru */
+.table-custom thead th {
+    background: #e7f1ff;        /* biru muda lembut */
+    color: #18405C;             /* biru gelap (warna tema sidebar) */
+    font-weight: 600;
+    padding: 14px 16px;
+    border-radius: 6px 6px 0 0;
+}
+
+/* Agar header menyatu dan tidak loncat */
+.table-custom thead tr {
+    background: #e7f1ff;
+    border-radius: 8px;
+}
+
+/* Hilangkan efek transparan sebelumnya */
+.table-custom thead th {
+    background-color: #e7f1ff !important;
+}
+
