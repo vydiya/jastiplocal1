@@ -1,6 +1,14 @@
 {{-- resources/views/admin/layout/sidebar.blade.php --}}
 <aside id="left-panel" class="left-panel">
     <nav class="navbar navbar-expand-sm navbar-default">
+
+        <!-- FORM LOGOUT TERSEMBUNYI (TAMBAHAN PENTING UNTUK KEAMANAN) -->
+        <!-- Form ini akan menjalankan route POST untuk logout secara aman -->
+        <form action="{{ route('admin.logout') }}" method="POST" id="logout-form" style="display: none;">
+            @csrf
+        </form>
+        <!-- AKHIR FORM LOGOUT -->
+
         <div id="main-menu" class="main-menu collapse navbar-collapse">
             <ul class="nav navbar-nav">
 
@@ -25,20 +33,20 @@
                     {{--
                     <ul class="sub-menu children">
                         <li><a href="{{ url('admin/master/users') }}"><img
-                                    src="{{ asset('admin/assets/images/icons/users.svg') }}"
-                                    style="width:16px;margin-right:8px">Data Pengguna</a></li>
+                                        src="{{ asset('admin/assets/images/icons/users.svg') }}"
+                                        style="width:16px;margin-right:8px">Data Pengguna</a></li>
                         <li><a href="{{ url('admin/master/merchants') }}"><img
-                                    src="{{ asset('admin/assets/images/icons/merchants.svg') }}"
-                                    style="width:16px;margin-right:8px">Data Jastiper</a></li>
+                                        src="{{ asset('admin/assets/images/icons/merchants.svg') }}"
+                                        style="width:16px;margin-right:8px">Data Jastiper</a></li>
                         <li><a href="{{ url('admin/master/products') }}"><img
-                                    src="{{ asset('admin/assets/images/icons/products.svg') }}"
-                                    style="width:16px;margin-right:8px">Data Produk</a></li>
+                                        src="{{ asset('admin/assets/images/icons/products.svg') }}"
+                                        style="width:16px;margin-right:8px">Data Produk</a></li>
                         <li><a href="{{ url('admin/master/payment-methods') }}"><img
-                                    src="{{ asset('admin/assets/images/icons/payment-methods.svg') }}"
-                                    style="width:16px;margin-right:8px">Metode Pembayaran</a></li>
+                                        src="{{ asset('admin/assets/images/icons/payment-methods.svg') }}"
+                                        style="width:16px;margin-right:8px">Metode Pembayaran</a></li>
                         <li><a href="{{ url('admin/master/categories') }}"><img
-                                    src="{{ asset('admin/assets/images/icons/categories.svg') }}"
-                                    style="width:16px;margin-right:8px">Kategori Produk</a></li>
+                                        src="{{ asset('admin/assets/images/icons/categories.svg') }}"
+                                        style="width:16px;margin-right:8px">Kategori Produk</a></li>
                     </ul>
                     --}}
                 </li>
@@ -109,10 +117,10 @@
                     </a>
                 </li>
 
-                {{-- 10. Logout --}}
+                {{-- 10. Logout (LINK YANG SUDAH DIPERBAIKI) --}}
                 <li>
                     <a href="#"
-                        onclick="alert('Logout belum diaktifkan. Nanti akan dibuatkan route logout.'); return false;">
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <img src="{{ asset('admin/assets/images/icons/logout.svg') }}" alt="Logout"
                             style="width:20px;margin-right:12px">
                         Logout
