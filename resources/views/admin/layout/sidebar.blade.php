@@ -61,13 +61,14 @@
                 </li>
 
                 {{-- 3. Pesanan --}}
-                <li class="{{ request()->is('admin/orders*') || request()->is('admin/pesanan*') ? 'active' : '' }}">
-                    <a href="{{ url('admin/pesanan') }}">
+                <li class="{{ request()->is('jastiper/pesanan*') ? 'active' : '' }}">
+                    <a href="{{ route('jastiper.pesanan.index') }}">
                         <img src="{{ asset('admin/assets/images/icons/pesanan.svg') }}" alt="Pesanan"
                             style="width:20px;margin-right:12px">
                         Pesanan
                     </a>
                 </li>
+
 
                 {{-- 3.5 Detail Pesanan (letakkan di bawah Pesanan) --}}
                 <li
@@ -82,9 +83,9 @@
                 {{-- 3.4 barang --}}
                 <li class="{{ request()->is('jastiper/barang*') ? 'active' : '' }}">
                     <a href="{{ url('jastiper/barang') }}">
-                        <img src="{{ asset('admin/assets/images/barang.svg') }}" style="width:20px;margin-right:12px"
-                            alt="Barang">
-                        Barang Saya
+                        <img src="{{ asset('admin/assets/images/icons/barang.svg') }}"
+                            style="width:20px;margin-right:12px" alt="Barang">
+                        Barang
                     </a>
                 </li>
 
@@ -99,7 +100,7 @@
                     </a>
                 </li>
 
-             
+
                 {{-- 5. Transaksi --}}
                 <li
                     class="{{ request()->is('admin/transaction*') || request()->is('admin/transaksi*') ? 'active' : '' }}">

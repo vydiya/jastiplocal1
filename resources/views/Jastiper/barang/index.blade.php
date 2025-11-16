@@ -4,104 +4,146 @@
 @section('page-title', 'Barang Saya')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('admin/assets/css/custom-user_table.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/custom-user_table.css') }}">
+    /* Paksa semua input pencarian memiliki lebar 320px */
+
 @endpush
 
 @section('content')
-<div class="user-table-card">
+    <div class="user-table-card">
 
-    <h2 class="user-table-title">Barang Saya</h2>
+        <h2 class="user-table-title">Barang Saya</h2>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="user-controls" style="display:flex; align-items:center; gap:8px;">
-            <input id="searchBarang" class="user-search-input" type="text" placeholder="Cari ID / Nama Barang">
-            <button id="btnSearchBarang" class="btn-search">Search</button>
-            <div style="margin-left:8px; color:#6c7680;">
-                Total: <strong>{{ $barangs->total() }}</strong>
+        {{-- SEARCH + TOTAL + ADD --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="user-controls" style="display:flex; align-items:center; gap:8px;">
+                <form method="GET" action="{{ route('jastiper.barang.index') }}"
+                    style="display:flex; gap:8px; align-items:center;">
+                    <input id="searchBarang" name="q" class="user-search-input" type="text"
+                        placeholder="Cari ID / Nama Barang" value="{{ request('q', $q ?? '') }}"
+                        style="padding:8px 12px; border:1px solid #DDE0E3; border-radius:8px; width:320px;"
+                        autocomplete="off">
+
+                    <button type="submit" id="btnSearchBarang" class="btn-search"
+                        style="padding:8px 18px; border-radius:8px; border:1px solid #2b6be6; background:#fff; color:#2b6be6;">
+                        Search
+                    </button>
+                </form>
+
+                <div style="margin-left:12px; color:#6c7680;">
+                    Total: <strong>{{ $barangs->total() ?? $barangs->count() }}</strong>
+                    &nbsp;|&nbsp;
+                    Ditampilkan: <strong>{{ $barangs->count() }}</strong>
+                </div>
             </div>
+
+            <a href="{{ route('jastiper.barang.create') }}" class="btn-add-user"
+                style="padding:8px 14px; background:#2b6be6; color:white; border-radius:8px;">
+                + Tambah Barang
+            </a>
         </div>
 
-        <a href="{{ route('jastiper.barang.create') }}" class="btn-add-user">+ Tambah Barang</a>
+        <div class="table-responsive">
+            <table id="barangTable" class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Foto</th>
+                        <th>Nama Barang</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Kategori</th>
+                        <th>Tersedia</th>
+                        <th>Validasi</th>
+                        <th>Tanggal Input</th>
+                        <th class="col-actions">Operasi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($barangs as $b)
+                        <tr data-id="{{ $b->id }}">
+                            <td>{{ $b->id }}</td>
+
+                            <td>
+                                @if($b->foto_barang && file_exists(storage_path('app/public/' . $b->foto_barang)))
+                                    <img src="{{ asset('storage/' . $b->foto_barang) }}" alt="foto"
+                                        style="height:40px;border-radius:6px;">
+                                @else
+                                    <img src="{{ asset('admin/assets/images/no-image.png') }}" alt="no-image"
+                                        style="height:40px;border-radius:6px;opacity:.6">
+                                @endif
+                            </td>
+
+                            <td class="truncate">{{ $b->nama_barang }}</td>
+                            <td>Rp {{ number_format($b->harga, 0, ',', '.') }}</td>
+                            <td>{{ $b->stok }}</td>
+                            <td>{{ $b->kategori?->nama ?? '-' }}</td>
+                            <td>{{ $b->is_available === 'yes' ? 'Tersedia' : 'Tidak' }}</td>
+                            <td>{{ $b->status_validasi }}</td>
+                            <td>{{ $b->tanggal_input ? \Carbon\Carbon::parse($b->tanggal_input)->format('Y-m-d') : '-' }}</td>
+
+                            <td class="col-actions" style="text-align:right;">
+                                <div class="table-actions">
+                                    <a href="{{ route('jastiper.barang.edit', $b) }}" class="btn-action edit" title="Edit">
+                                        <img src="{{ asset('admin/assets/images/icons/edit.svg') }}" alt="Edit">
+                                    </a>
+
+                                    <form action="{{ route('jastiper.barang.destroy', $b) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-action del"
+                                            onclick="return confirm('Hapus barang {{ addslashes($b->nama_barang) }}?')">
+                                            <img src="{{ asset('admin/assets/images/icons/delete.svg') }}" alt="Hapus">
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    @if($barangs->isEmpty())
+                        <tr>
+                            <td colspan="10" class="text-center" style="padding:20px 12px; color:#6c7680;">Belum ada data
+                                barang.</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-3">
+            {{ $barangs->withQueryString()->links() }}
+        </div>
+
     </div>
-
-    <div class="table-responsive">
-        <table id="barangTable" class="table table-custom">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Foto</th>
-                    <th>Nama Barang</th>
-                    <th>Harga</th>
-                    <th>Stok</th>
-                    <th>Kategori</th>
-                    <th>Tersedia</th>
-                    <th>Validasi</th>
-                    <th>Tanggal Input</th>
-                    <th class="col-actions">Operasi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($barangs as $b)
-                <tr data-id="{{ $b->id }}">
-                    <td>{{ $b->id }}</td>
-
-                    <td>
-                        @if($b->foto_barang)
-                            <img src="{{ asset('storage/'.$b->foto_barang) }}" alt="foto" style="height:40px;border-radius:6px;">
-                        @else
-                            <img src="{{ asset('admin/assets/images/no-image.png') }}" alt="no-image" style="height:40px;border-radius:6px;opacity:.6">
-                        @endif
-                    </td>
-
-                    <td>{{ $b->nama_barang }}</td>
-                    <td>Rp {{ number_format($b->harga, 0, ',', '.') }}</td>
-                    <td>{{ $b->stok }}</td>
-                    <td>{{ $b->kategori?->nama ?? '-' }}</td>
-                    <td>{{ $b->is_available === 'yes' ? 'Tersedia' : 'Tidak' }}</td>
-                    <td>{{ $b->status_validasi }}</td>
-                    <td>{{ $b->tanggal_input ? $b->tanggal_input->format('Y-m-d') : '-' }}</td>
-
-                    <td class="col-actions" style="text-align:right;">
-                        <div class="table-actions">
-                            <a href="{{ route('jastiper.barang.edit', $b) }}" class="btn-action edit" title="Edit">
-                                <img src="{{ asset('admin/assets/images/icons/edit.svg') }}" alt="Edit">
-                            </a>
-
-                            <form action="{{ route('jastiper.barang.destroy', $b) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-action del" onclick="return confirm('Hapus barang {{ addslashes($b->nama_barang) }}?')">
-                                    <img src="{{ asset('admin/assets/images/icons/delete.svg') }}" alt="Hapus">
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    <div class="mt-3">
-        {{ $barangs->links() }}
-    </div>
-
-</div>
 @endsection
 
 @push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    function filterTable(q){
-        q = (q||'').toLowerCase().trim();
-        if(!q) return $('#barangTable tbody tr').show();
-        $('#barangTable tbody tr').each(function(){
-            const txt = ($(this).text()||'').toLowerCase();
-            $(this).toggle(txt.indexOf(q) !== -1);
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // additional client-side filter (optional). kept for instant filtering if user prefers client-side.
+            function filterTable(q) {
+                q = (q || '').toLowerCase().trim();
+                if (!q) return $('#barangTable tbody tr').show();
+                $('#barangTable tbody tr').each(function () {
+                    const txt = ($(this).text() || '').toLowerCase();
+                    $(this).toggle(txt.indexOf(q) !== -1);
+                });
+            }
+
+            // If you used form submit (server-side), keep the JS but do not prevent normal submit.
+            // Bind Enter key to trigger submit (already natural) or do client-side filter:
+            const btn = document.getElementById('btnSearchBarang');
+            const input = document.getElementById('searchBarang');
+            if (btn && input) {
+                // click will submit form (server-side search). If you prefer client-side instant filter,
+                // change button type to "button" and uncomment below line:
+                // btn.addEventListener('click', function(){ filterTable(input.value); });
+
+                // keep Enter key behavior for convenience (form submit)
+                input.addEventListener('keyup', function (e) { if (e.key === 'Enter') { /* form submits by default */ } });
+            }
         });
-    }
-    document.getElementById('btnSearchBarang').addEventListener('click', function(){ filterTable(document.getElementById('searchBarang').value) });
-    document.getElementById('searchBarang').addEventListener('keyup', function(e){ if(e.key === 'Enter') filterTable(this.value) });
-});
-</script>
+    </script>
 @endpush

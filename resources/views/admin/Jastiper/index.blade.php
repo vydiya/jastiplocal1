@@ -1,4 +1,3 @@
-{{-- resources/views/admin/jastiper/index.blade.php --}}
 @extends('admin.layout.app')
 
 @section('title', 'Jastiper - Admin')
@@ -10,16 +9,15 @@
 
 @section('content')
 <div class="user-table-card">
-    {{-- JUDUL HALAMAN --}}
     <h2 class="user-table-title">Data Jastiper</h2>
 
-    {{-- 🔍 SEARCH + TOTAL + ADD BUTTON (samakan dengan Data Pengguna) --}}
+    {{-- SEARCH + TOTAL + ADD BUTTON --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
-
         <div class="user-controls" style="display:flex; align-items:center; gap:8px;">
             <input id="searchJastiper" class="user-search-input" type="text"
                    placeholder="Cari berdasarkan ID / Nama Toko / Username"
-                   style="padding:8px 12px; border:1px solid #DDE0E3; border-radius:8px;">
+                   style="padding:8px 12px; border:1px solid #DDE0E3; border-radius:8px; width:320px;"
+                   value="{{ request('q', $q ?? '') }}">
 
             <button id="btnSearchJastiper" class="btn-search"
                     style="padding:8px 18px; border-radius:8px; border:1px solid #2b6be6; background:#fff; color:#2b6be6;">
@@ -37,7 +35,6 @@
         </a>
     </div>
 
-    {{-- 🧾 TABLE --}}
     <div class="table-responsive">
         <table id="jastipersTable" class="table table-custom">
             <thead>
@@ -95,7 +92,6 @@
         </table>
     </div>
 
-    {{-- PAGINATION --}}
     <div class="mt-3">
         {{ $jastipers->links() }}
     </div>
@@ -105,11 +101,9 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Simple client-side search that matches any cell text
     function filterTable(q) {
         q = (q || '').toLowerCase().trim();
         if (!q) {
-            // show all
             document.querySelectorAll('#jastipersTable tbody tr').forEach(tr => tr.style.display = '');
             return;
         }
@@ -124,10 +118,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (btn && input) {
         btn.addEventListener('click', function () {
-            filterTable(input.value);
+            // if you want server-side search, uncomment the next line to submit a GET:
+            // window.location = '{{ url()->current() }}?q=' + encodeURIComponent(input.value);
+            filterTable(input.value); // client-side fallback
         });
         input.addEventListener('keyup', function (e) {
-            if (e.key === 'Enter') filterTable(this.value);
+            if (e.key === 'Enter') {
+                // window.location = '{{ url()->current() }}?q=' + encodeURIComponent(this.value);
+                filterTable(this.value);
+            }
         });
     }
 });
