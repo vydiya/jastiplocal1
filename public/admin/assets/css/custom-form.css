@@ -1,0 +1,141 @@
+/* ---------- custom-form.css (improved) ---------- */
+/* Basic reset for predictable sizing */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Form panel: rounded card */
+.form-panel {
+  width: 100%;
+  max-width: 980px;                   /* tetap batasi lebar */
+  margin: 20px auto;                  /* center di konten */
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 30px rgba(11,28,50,0.06);
+  border: 1px solid rgba(15,40,65,0.04);
+  font-family: inherit;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Judul dalam kotak — sengaja sangat spesifik dan pakai !important
+   supaya menang atas style tema lain dan identik dengan title tabel */
+.form-panel .form-title,
+.form-panel h2.form-title,
+.form-panel h1.form-title {
+  margin: 0 0 18px 0 !important;
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  color: #F4B400 !important;          /* kuning sesuai Data Pengguna */
+  letter-spacing: -0.2px;
+}
+
+/* shared page-title utility (bisa dipakai juga di index.blade) */
+.page-title {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #F4B400 !important;
+  line-height: 1.1 !important;
+  margin-bottom: 18px !important;
+}
+
+/* Form groups / controls */
+.form-panel .form-group { margin-bottom: 16px; }
+.form-panel .form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #22303a;
+  font-size: 14px;
+}
+.form-panel .form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e6e9ef;
+  background: #fbfdff;
+  font-size: 14px;
+  color: #2b394f;
+  transition: box-shadow .12s, border-color .12s, transform .06s;
+  line-height: 1.3;
+  min-height: 40px;
+}
+
+/* nice focus */
+.form-panel .form-control:focus {
+  outline: none;
+  border-color: #2b6be6;
+  box-shadow: 0 6px 18px rgba(43,107,230,0.08);
+  transform: translateY(-1px);
+}
+
+/* textarea specifics */
+.form-panel textarea.form-control {
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* two-column row (password + confirm) */
+.form-panel .form-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.form-panel .form-row .col {
+  flex: 1 1 0;
+  min-width: 0; /* penting agar anak bisa mengecil */
+}
+
+/* action buttons row */
+.form-panel .form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-top: 18px;
+}
+.form-panel .btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-panel .btn-primary {
+  background: #2b6be6;
+  color: #fff;
+  border-color: #2b6be6;
+}
+.form-panel .btn-secondary {
+  background: #f3f6f9;
+  color: #233036;
+  border-color: #e6e9ef;
+}
+
+/* helper text & validation */
+.form-panel .form-help { font-size: 13px; color: #7b8790; margin-top: 6px; }
+.form-panel .text-danger { color: #d04848; font-size: 13px; }
+
+/* small screens: stack columns & reduce padding */
+@media (max-width: 768px) {
+  .form-panel { padding: 18px; margin: 12px; border-radius: 14px; }
+  .form-panel .form-row { flex-direction: column; gap: 12px; }
+  .form-panel .form-actions { flex-direction: column-reverse; gap: 8px; }
+  .form-panel .btn { width: 100%; justify-content: center; }
+}
+
+/* If your admin layout uses a fixed sidebar and content area, ensure the panel doesn't overflow:
+   allow the form inside content wrapper to flow and not exceed available space */
+@media (min-width: 1200px) {
+  .form-panel { max-width: 920px; }
+}
+
+/* small visual tweak: reduce label sizes in very small devices */
+@media (max-width: 420px) {
+  .form-panel .form-label { font-size: 13px; }
+  .form-panel .form-title { font-size: 22px !important; }
+}

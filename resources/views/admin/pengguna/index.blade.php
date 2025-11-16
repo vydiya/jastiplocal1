@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.tailwindcss.min.css">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/custom-user_table.css') }}">
     <style>
-        /* tambahkan sedikit rapi */
+        /* rapi sedikit */
         .table-custom td,
         .table-custom th {
             vertical-align: middle !important;
@@ -16,7 +16,7 @@
 
         .btn-action img {
             width: 16px;
-            margin-right: 4px;
+            margin-right: 6px;
             vertical-align: middle;
         }
 
@@ -24,7 +24,31 @@
         .table-actions button {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+        }
+
+        /* potong alamat panjang */
+        .text-truncate {
+            max-width: 320px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .col-id {
+            width: 70px;
+        }
+
+        .col-username {
+            width: 140px;
+        }
+
+        .col-nohp {
+            width: 120px;
+        }
+
+        .col-tgl {
+            width: 160px;
         }
     </style>
 @endpush
@@ -35,20 +59,23 @@
         {{-- JUDUL HALAMAN --}}
         <h2 class="user-table-title">Data Pengguna</h2>
 
-        {{-- 🔍 SEARCH + TOTAL + ADD BUTTON --}}
+        {{-- SEARCH + TOTAL + ADD --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
 
             <div class="user-controls" style="display:flex; align-items:center; gap:8px;">
-                <input id="searchIdInput" class="user-search-input" type="text" placeholder="Cari berdasarkan ID"
-                    style="padding:8px 12px; border:1px solid #DDE0E3; border-radius:8px;">
+                <input id="searchIdInput" class="user-search-input" type="text"
+                    placeholder="Cari berdasarkan ID / Username / Nama / Email"
+                    style="padding:8px 12px; border:1px solid #DDE0E3; border-radius:8px; width:320px;">
 
                 <button id="btnSearchId" class="btn-search"
                     style="padding:8px 18px; border-radius:8px; border:1px solid #007bff; background:#fff; color:#007bff;">
                     Search
                 </button>
 
-                <div style="margin-left:8px; color:#6c7680;">
+                <div style="margin-left:12px; color:#6c7680;">
                     Total: <strong>{{ $users->total() ?? $users->count() }}</strong>
+                    &nbsp;|&nbsp;
+                    Ditampilkan: <strong>{{ $users->count() }}</strong>
                 </div>
             </div>
 
@@ -58,57 +85,59 @@
             </a>
         </div>
 
-        {{-- 🧾 TABLE --}}
+        {{-- TABLE --}}
         <div class="table-responsive">
             <table id="usersTable" class="table table-custom">
                 <thead>
                     <tr>
                         <th class="col-id">ID</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th style="text-align:right; width:200px">Operasi</th>
+                        <th class="col-name">Nama</th>
+                        <th class="col-namalengkap">Nama Lengkap</th>
+                        <th class="col-username">Username</th>
+                        <th class="col-email">Email</th>
+                        <th class="col-nohp">No. HP</th>
+                        <th class="col-alamat">Alamat</th>
+                        <th class="col-role">Role</th>
+                        <th class="col-tgl">Tanggal Daftar</th>
+                        <th class="col-actions" style="text-align:right">Operasi</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @foreach($users as $user)
-                        <tr data-id="{{ $user->id }}">
+                        <tr>
                             <td class="col-id">{{ $user->id }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->role ?? '-' }}</td>
+                            <td class="col-name">{{ $user->name }}</td>
+                            <td class="col-namalengkap">{{ $user->nama_lengkap ?? '-' }}</td>
+                            <td class="col-username">{{ $user->username ?? '-' }}</td>
+                            <td class="col-email"><span class="truncate" title="{{ $user->email }}">{{ $user->email }}</span>
+                            </td>
+                            <td class="col-nohp">{{ $user->no_hp ?? '-' }}</td>
+                            <td class="col-alamat"><span class="truncate"
+                                    title="{{ $user->alamat }}">{{ $user->alamat ?? '-' }}</span></td>
+                            <td class="col-role">{{ $user->role ?? '-' }}</td>
+                            <td class="col-tgl">{{ $user->tanggal_daftar ? $user->tanggal_daftar->format('Y-m-d') : '-' }}</td>
 
-                            <td class="table-actions" style="text-align:right;">
-                                <div style="display:flex; justify-content:flex-end; gap:10px;">
-
-                                    {{-- DETAIL --}}
-                                    <a href="{{ route('admin.pengguna.show', $user->id) }}" class="btn-action" title="Detail">
-                                        <img src="{{ asset('admin/assets/images/icons/lihat.svg') }}">
-                                        Detail
+                            <!-- Operasi: hanya ICON Edit dan Delete (tanpa teks) -->
+                            <td class="col-actions">
+                                <div class="table-actions">
+                                    <!-- EDIT (ikon saja) -->
+                                    <a href="{{ route('admin.pengguna.edit', $user) }}" class="btn-action edit" title="Edit">
+                                        <img src="{{ asset('admin/assets/images/icons/edit.svg') }}" alt="Edit">
                                     </a>
 
-                                    {{-- EDIT --}}
-                                    <a href="{{ route('admin.pengguna.edit', $user->id) }}" class="btn-action" title="Edit">
-                                        <img src="{{ asset('admin/assets/images/icons/edit.svg') }}">
-                                        Edit
-                                    </a>
-
-                                    {{-- DELETE --}}
-                                    <form action="{{ route('admin.pengguna.destroy', $user->id) }}" method="POST"
+                                    <!-- DELETE (ikon saja) -->
+                                    <form action="{{ route('admin.pengguna.destroy', $user) }}" method="POST"
+                                        onsubmit="return confirm('Hapus pengguna {{ addslashes($user->name) }}?')"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-action del" title="Hapus"
-                                            onclick="return confirm('Hapus pengguna ini?')">
-                                            <img src="{{ asset('admin/assets/images/icons/delete.svg') }}">
-                                            Hapus
+                                        <button type="submit" class="btn-action del" title="Hapus">
+                                            <img src="{{ asset('admin/assets/images/icons/delete.svg') }}" alt="Hapus">
                                         </button>
                                     </form>
-
                                 </div>
                             </td>
-
                         </tr>
                     @endforeach
                 </tbody>
@@ -130,36 +159,54 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // DataTables (tanpa search & pagination)
+            // DataTables (tanpa paging karena pakai paginate Laravel)
             $('#usersTable').DataTable({
                 paging: false,
                 info: false,
                 searching: false,
                 ordering: true,
                 columnDefs: [
-                    { orderable: false, targets: [4] }
+                    { orderable: false, targets: [9] } // kolom Operasi (index dimulai 0)
                 ]
             });
 
-            // Search by ID
-            function filterById(id) {
-                id = id.toString().trim();
-                if (!id) {
+            // Search (by ID, username, name, email)
+            function filterRows(query) {
+                query = (query || '').toString().toLowerCase().trim();
+                if (!query) {
                     $('#usersTable tbody tr').show();
                     return;
                 }
+
                 $('#usersTable tbody tr').each(function () {
-                    var rowId = $(this).data('id')?.toString() ?? '';
-                    (rowId.indexOf(id) !== -1) ? $(this).show() : $(this).hide();
+                    var $tr = $(this);
+                    var id = String($tr.data('id') || '').toLowerCase();
+                    var username = String($tr.data('username') || '').toLowerCase();
+                    var name = String($tr.data('name') || '').toLowerCase();
+                    var email = String($tr.data('email') || '').toLowerCase();
+
+                    var matches = id.indexOf(query) !== -1 ||
+                        username.indexOf(query) !== -1 ||
+                        name.indexOf(query) !== -1 ||
+                        email.indexOf(query) !== -1;
+
+                    matches ? $tr.show() : $tr.hide();
                 });
             }
 
             document.getElementById('btnSearchId').addEventListener('click', function () {
-                filterById(document.getElementById('searchIdInput').value);
+                filterRows(document.getElementById('searchIdInput').value);
             });
 
             document.getElementById('searchIdInput').addEventListener('keyup', function (e) {
-                if (e.key === 'Enter') filterById(this.value);
+                // live filter on type (debounce simple)
+                var q = this.value;
+                if (this._timer) clearTimeout(this._timer);
+                this._timer = setTimeout(function () {
+                    filterRows(q);
+                }, 200);
+
+                if (e.key === 'Enter') filterRows(this.value);
             });
 
         });

@@ -4,7 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\UserController; // <-- Tambahkan ini
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\JastiperController;
+
+// controllers untuk area jastiper (frontend jastiper / panel jastiper)
+use App\Http\Controllers\Jastiper\PesananController;
+use App\Http\Controllers\Jastiper\DetailPesananController;
+use App\Http\Controllers\Jastiper\BarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,10 +55,28 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])
         ->name('profile.updateAvatar');
 
-    /*
-    |--------------------------------------------------------------------------
-    | CRUD PENGGUNA (ADMIN → Data Master → Pengguna)
-    |--------------------------------------------------------------------------
-    */
+    // CRUD Pengguna
     Route::resource('pengguna', UserController::class);
+
+    // CRUD Jastiper (admin mengelola jastipers)
+    Route::resource('jastiper', JastiperController::class);
+});
+
+/*
+|--------------------------------------------------------------------------
+| ROUTE JASTIPER (LOGIN WAJIB)
+| grouped under /jastiper with name prefix jastiper.*
+|--------------------------------------------------------------------------
+|
+| These controllers live in App\Http\Controllers\Jastiper\
+*/
+Route::middleware(['auth'])->prefix('jastiper')->name('jastiper.')->group(function () {
+    // CRUD Pesanan (jastiper sees/manage pesanan)
+    Route::resource('pesanan', PesananController::class);
+
+    // CRUD Detail Pesanan (jika butuh CRUD terpisah)
+    Route::resource('detail-pesanan', DetailPesananController::class);
+
+    // CRUD Barang (barang milik jastiper)
+    Route::resource('barang', BarangController::class);
 });

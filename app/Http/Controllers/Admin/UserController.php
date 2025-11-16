@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User; // pakai model User bawaan Laravel (sesuaikan jika beda)
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
     // GET /admin/pengguna
     public function index()
     {
-        $users = User::paginate(15);
+        $users = User::orderBy('id', 'desc')->paginate(15);
         return view('admin.pengguna.index', compact('users'));
     }
 
@@ -25,15 +28,28 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email'=> 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'name'          => 'required|string|max:100',
+            'email'         => 'required|email|max:255|unique:users,email',
+            'password'      => 'required|string|min:6|confirmed',
+            'username'      => 'nullable|string|max:50|unique:users,username',
+            'nama_lengkap'  => 'nullable|string|max:150',
+            'no_hp'         => 'nullable|string|max:30',
+            'alamat'        => 'nullable|string',
+            'role'          => ['nullable', Rule::in(['pengguna','admin','jastiper'])],
+            'tanggal_daftar'=> 'nullable|date',
         ]);
 
-        $data['password'] = bcrypt($data['password']);
+        // Hash password (model juga punya cast 'hashed' - tapi kita hash eksplisit di controller)
+        $data['password'] = Hash::make($data['password']);
+
+        // jika tanggal_daftar tidak diisi, biarkan DB gunakan current timestamp (migration pakai useCurrent)
+        if (empty($data['tanggal_daftar'])) {
+            unset($data['tanggal_daftar']);
+        }
+
         User::create($data);
 
-        return redirect()->route('admin.pengguna.index')->with('success','User created.');
+        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil dibuat.');
     }
 
     // GET /admin/pengguna/{pengguna}
@@ -52,24 +68,45 @@ class UserController extends Controller
     public function update(Request $request, User $pengguna)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email'=> 'required|email|unique:users,email,'.$pengguna->id,
-            // password optional
+            'name'          => 'required|string|max:100',
+            'email'         => ['required','email','max:255', Rule::unique('users','email')->ignore($pengguna->id)],
+            'username'      => ['nullable','string','max:50', Rule::unique('users','username')->ignore($pengguna->id)],
+            'nama_lengkap'  => 'nullable|string|max:150',
+            'no_hp'         => 'nullable|string|max:30',
+            'alamat'        => 'nullable|string',
+            'role'          => ['nullable', Rule::in(['pengguna','admin','jastiper'])],
+            'tanggal_daftar'=> 'nullable|date',
+            // password optional (ditangani di bawah)
         ]);
 
-        if($request->filled('password')){
+        // jika user mengisi password baru
+        if ($request->filled('password')) {
             $request->validate(['password' => 'string|min:6|confirmed']);
-            $data['password'] = bcrypt($request->password);
+            $data['password'] = Hash::make($request->password);
+        } else {
+            // Jangan overwrite password jika tidak diisi
+            unset($data['password']);
+        }
+
+        // jika tanggal_daftar kosong, jangan overwrite
+        if (empty($data['tanggal_daftar'])) {
+            unset($data['tanggal_daftar']);
         }
 
         $pengguna->update($data);
-        return redirect()->route('admin.pengguna.index')->with('success','User updated.');
+
+        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
     }
 
     // DELETE /admin/pengguna/{pengguna}
     public function destroy(User $pengguna)
     {
-        $pengguna->delete();
-        return redirect()->route('admin.pengguna.index')->with('success','User deleted.');
+        try {
+            $pengguna->delete();
+            return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil dihapus.');
+        } catch (\Throwable $e) {
+            // kemungkinan constraint FK atau error lain
+            return redirect()->route('admin.pengguna.index')->with('error', 'Gagal menghapus pengguna. Pastikan tidak ada data terkait atau hubungi admin.');
+        }
     }
 }

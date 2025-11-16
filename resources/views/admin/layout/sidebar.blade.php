@@ -29,6 +29,14 @@
                         Data Pengguna
                     </a>
                 </li>
+                {{-- 2.1 Data Jastiper --}}
+                <li class="{{ request()->is('admin/jastiper*') ? 'active' : '' }}">
+                    <a href="{{ url('admin/jastiper') }}">
+                        <img src="{{ asset('admin/assets/images/icons/data-master.svg') }}" alt="Data Jastiper"
+                            style="width:20px;margin-right:12px">
+                        Data Jastiper
+                    </a>
+                </li>
 
                 {{-- Jika mau dropdown sub-item (opsional), uncomment bagian bawah dan sesuaikan URL --}}
                 {{--
@@ -61,6 +69,26 @@
                     </a>
                 </li>
 
+                {{-- 3.5 Detail Pesanan (letakkan di bawah Pesanan) --}}
+                <li
+                    class="{{ request()->is('jastiper/detail-pesanan*') || request()->is('admin/detail-pesanan*') ? 'active' : '' }}">
+                    <a href="{{ url('jastiper/detail-pesanan') }}">
+                        <img src="{{ asset('admin/assets/images/icons/pesanan.svg') }}" alt="Detail Pesanan"
+                            style="width:20px;margin-right:12px">
+                        Detail Pesanan
+                    </a>
+                </li>
+
+                {{-- 3.4 barang --}}
+                <li class="{{ request()->is('jastiper/barang*') ? 'active' : '' }}">
+                    <a href="{{ url('jastiper/barang') }}">
+                        <img src="{{ asset('admin/assets/images/barang.svg') }}" style="width:20px;margin-right:12px"
+                            alt="Barang">
+                        Barang Saya
+                    </a>
+                </li>
+
+
                 {{-- 4. Pembayaran --}}
                 <li
                     class="{{ request()->is('admin/payments*') || request()->is('admin/pembayaran*') ? 'active' : '' }}">
@@ -71,6 +99,7 @@
                     </a>
                 </li>
 
+             
                 {{-- 5. Transaksi --}}
                 <li
                     class="{{ request()->is('admin/transaction*') || request()->is('admin/transaksi*') ? 'active' : '' }}">
