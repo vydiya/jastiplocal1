@@ -10,4 +10,5 @@ class Barang extends Model {
     public function kategori(){ return $this->belongsTo(Kategori::class); }
     public function admin(){ return $this->belongsTo(User::class,'admin_id'); }
     public function detailPesanans(){ return $this->hasMany(DetailPesanan::class); }
+    public function laporanPenjualans(){ return $this->hasMany(LaporanPenjualan::class); }
 }
