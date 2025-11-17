@@ -1,0 +1,47 @@
+// shared
+$bg: #f6f7f9;
+$text: #222;
+$muted: #9aa0a6;
+$radius: 12px;
+
+/* Theme maps */
+$theme-yellow: (
+    primary: #F6B21A,
+    primary-dark: #E09A00,
+    accent: #2B8CFF,
+    highlight: rgba(246, 178, 26, 0.12)
+);
+
+$theme-blue: (
+    primary: #2B8CFF,
+    primary-dark: #1F6FE6,
+    accent: #F6B21A,
+    highlight: rgba(43, 140, 255, 0.08)
+);
+
+@function theme-get($map, $key) {
+    @return map-get($map, $key);
+}
+
+/* Generate CSS variables for each theme class */
+.theme-yellow {
+    --color-primary: #{theme-get($theme-yellow, primary)};
+    --color-primary-dark: #{theme-get($theme-yellow, primary-dark)};
+    --color-accent: #{theme-get($theme-yellow, accent)};
+    --color-highlight: #{theme-get($theme-yellow, highlight)};
+}
+
+.theme-blue {
+    --color-primary: #{theme-get($theme-blue, primary)};
+    --color-primary-dark: #{theme-get($theme-blue, primary-dark)};
+    --color-accent: #{theme-get($theme-blue, accent)};
+    --color-highlight: #{theme-get($theme-blue, highlight)};
+}
+
+/* default root */
+:root {
+    --color-primary: #F6B21A;
+    --color-primary-dark: #E09A00;
+    --color-accent: #2B8CFF;
+    --color-highlight: rgba(246, 178, 26, 0.12);
+}
