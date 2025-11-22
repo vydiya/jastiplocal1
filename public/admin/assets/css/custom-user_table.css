@@ -1,11 +1,11 @@
 /* =========================
-   custom-user_table.css (clean)
+   custom-user_table.css (final - jastiper width fixed)
    ========================= */
 
 /* Container */
 .user-table-card {
   max-width: 100%;
-  overflow-x: auto;                /* izinkan scroll horizontal bila sangat kecil */
+  overflow-x: auto;
   padding: 18px;
   background: #fff;
   border-radius: 10px;
@@ -16,25 +16,24 @@
 .table-custom {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;             /* stabilkan lebar kolom */
+  table-layout: fixed;   /* kontrol kolom agar tidak melebar */
   font-size: 14px;
 }
 
 /* Header */
 .table-custom thead th {
-  background: #e7f1ff;             /* biru muda seragam */
+  background: #e7f1ff;
   color: #18405C;
   font-weight: 700;
   padding: 12px 14px;
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
-  background-clip: padding-box;
   font-size: 14px;
+  line-height: 1.25;
+  word-break: break-word;
 }
-
-/* ensure last header cell has rounded corner if present */
 .table-custom thead tr th:first-child  { border-top-left-radius: 8px;  }
 .table-custom thead tr th:last-child   { border-top-right-radius: 8px; }
 
@@ -44,205 +43,190 @@
   border-bottom: 1px solid #eef2f7;
   transition: background .12s ease;
 }
+.table-custom tbody tr:hover { background: #f6fbff; }
 
-.table-custom tbody tr:hover {
-  background: #f6fbff;
-}
-
-/* Cells: default - truncate long text */
+/* Default cells = single line (supaya tidak mendorong kolom lain) */
 .table-custom td {
   padding: 10px 12px;
-  color: #344154;
   vertical-align: middle;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;             /* default: single-line */
-}
-
-/* Column widths (proportional) */
-/* adjust these values if your columns count/ordering change */
-.table-custom th:nth-child(1),
-.table-custom td:nth-child(1) { width: 6%; }   /* ID */
-.table-custom th:nth-child(2),
-.table-custom td:nth-child(2) { width: 15%; }  /* Nama */
-.table-custom th:nth-child(3),
-.table-custom td:nth-child(3) { width: 15%; }  /* Nama Lengkap */
-.table-custom th:nth-child(4),
-.table-custom td:nth-child(4) { width: 12%; }  /* Username */
-.table-custom th:nth-child(5),
-.table-custom td:nth-child(5) { width: 18%; }  /* Email */
-.table-custom th:nth-child(6),
-.table-custom td:nth-child(6) { width: 10%; }  /* No. HP */
-.table-custom th:nth-child(7),
-.table-custom td:nth-child(7) { width: 10%; }  /* Alamat */
-.table-custom th:nth-child(8),
-.table-custom td:nth-child(8) { width: 8%; }   /* Role */
-.table-custom th:nth-child(9),
-.table-custom td:nth-child(9) { width: 12%; }  /* Tanggal Daftar */
-.table-custom th:nth-child(10),
-.table-custom td:nth-child(10) { width: 10%; } /* Operasi */
-
-/* ========== Operasi (action) column - don't ellipsize, allow visible overflow ========== */
-.table-custom th.col-actions,
-.table-custom td.col-actions,
-.table-custom th:last-child,
-.table-custom td:last-child {
   white-space: nowrap;
-  overflow: visible;               /* penting agar tombol tidak kepotong */
-  text-overflow: clip;
-  padding-right: 18px;
-  min-width: 120px;                /* beri ruang minimal */
+  line-height: 1.35;
 }
 
-/* Action buttons container */
-.table-actions {
-  display: inline-flex;
+/* Thumbnail Produk */
+.prod-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+/* Produk: allow wrapping but limited width */
+.nama-barang-cell {
+  display: flex;
   gap: 8px;
   align-items: center;
-  justify-content: flex-end;
-  overflow: visible;
+  white-space: normal;
+  max-width: 200px;
+  overflow-wrap: anywhere;
 }
 
-/* Button base (icon-only) */
+/* Jastiper: SANGAT KOMPAK (tidak mendorong kolom lain) */
+.jastiper-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;   /* <── KUNCI UTAMA */
+}
+
+/* Harga */
+.price-cell {
+  white-space: nowrap;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Action column */
+.table-custom th.col-actions,
+.table-custom td.col-actions {
+  white-space: nowrap;
+  overflow: visible;
+  text-align: right;
+  min-width: 110px;
+}
+
+.table-actions { 
+  display: inline-flex; 
+  gap: 8px; 
+  align-items: center; 
+}
+
 .btn-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 36px;
   height: 36px;
   padding: 6px;
   border-radius: 8px;
-  border: 1px solid transparent;
-  background: #ffffff;
+  border: 1px solid #eee;
+  background: #fff;
   cursor: pointer;
-  transition: transform .06s ease, background .12s ease, border-color .12s ease;
-  line-height: 0;
+}
+.btn-action img { width: 16px; }
+
+/* Column widths (ID | Foto | Produk | Jastiper | Status | Admin | Tanggal | Operasi ) */
+/* =========================
+   AUTO COLUMN WIDTH VERSION
+   ========================= */
+
+/* Table base */
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;     /* <── AUTO WIDTH */
+  font-size: 14px;
 }
 
-/* Icon sizes inside buttons */
-.btn-action img,
-.btn-action svg {
-  width: 16px;
-  height: 16px;
-  display: block;
-}
-
-/* Specific styles */
-.btn-action.edit {
-  border-color: #dff6ea;
-  color: #2b8a50;
-}
-.btn-action.del {
-  border-color: #f6d8d8;
-  color: #c53030;
-}
-
-/* Hover */
-.btn-action:hover {
-  transform: translateY(-1px);
-  background: #f5f7ff;
-}
-
-/* ========= Truncate utility for long cells (email/alamat) ========= */
-.truncate {
-  display: inline-block;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ========= Responsive tweaks ========= */
-@media (max-width: 992px) {
-  .user-controls { flex-direction: column; gap: 10px; align-items: stretch; }
-  .table-custom td, .table-custom th { padding: 8px 10px; font-size: 13px; }
-  .table-custom th:nth-child(5), .table-custom td:nth-child(5) { width: 160px; } /* email narrower */
-  .table-custom th:nth-child(7), .table-custom td:nth-child(7) { width: 140px; } /* alamat narrower */
-  .table-actions { gap: 6px; }
-  .btn-action { width: 34px; height: 34px; }
-  .table-custom th.col-actions, .table-custom td.col-actions { min-width: 110px; }
-}
-
-@media (max-width: 520px) {
-  .table-actions { flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
-  .table-custom { font-size: 13px; }
-  .table-custom thead th { font-size: 13px; }
-}
-
-/* --- Enable wrapping for header & cells so long text breaks into new lines --- */
-
-/* make header text wrap instead of ellipsis */
+/* Header */
 .table-custom thead th {
-  white-space: normal;      /* allow wrapping in the header */
-  line-height: 1.25;
-  padding: 12px 14px;
-  word-break: break-word;
-  hyphens: auto;
-}
-
-/* make normal cells wrap text */
-.table-custom td {
-  white-space: normal;      /* allow wrapping for cell content */
-  word-break: break-word;   /* break long words/URLs */
-  overflow: visible;        /* visible so wrapped lines show */
-  text-overflow: clip;      /* no ellipsis */
+  background: #e7f1ff;
+  color: #18405C;
+  font-weight: 700;
   padding: 10px 12px;
-  line-height: 1.35;
+  text-align: left;
+  white-space: nowrap;
 }
 
-/* keep the action column (icons) unchanged — no wrapping for buttons */
-.table-custom th.col-actions,
-.table-custom td.col-actions,
-.table-custom th:last-child,
-.table-custom td:last-child {
-  white-space: nowrap;      /* keep action buttons on one line */
-  overflow: visible;
-  text-overflow: clip;
+/* Body rows */
+.table-custom tbody tr {
+  background: #fff;
+  border-bottom: 1px solid #eef2f7;
+}
+.table-custom tbody tr:hover { background: #f6fbff; }
+
+/* Default cell */
+.table-custom td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Keep truncate utility (if still used) but change to allow wrapping when class removed */
-.truncate {
-  /* If you still want a single-line truncate for some cells, keep this.
-     Otherwise remove 'truncate' class from those cells in Blade to allow wrap. */
-  display: inline-block;
-  max-width: 100%;
+/* =========================
+   FIX SPECIFIC COLUMN BEHAVIOR
+   ========================= */
+
+/* ID column: always small */
+.table-custom td:first-child,
+.table-custom th:first-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* Foto column: keep fixed */
+.table-custom td:nth-child(2),
+.table-custom th:nth-child(2) {
+  white-space: nowrap;
+}
+
+.prod-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+/* PRODUK column: allow wrapping but keep tight */
+.nama-barang-cell {
+  display: flex;
+  gap: 8px;
+  white-space: normal;
+  max-width: 200px;
+  overflow-wrap: anywhere;
+}
+
+/* JASTIPER column: auto shrink */
+.jastiper-cell {
+  max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Smaller screens: reduce padding and keep wrapping */
+/* STATUS / ADMIN / TANGGAL → auto size */
+.table-custom td:nth-child(5),
+.table-custom td:nth-child(6),
+.table-custom td:nth-child(7) {
+  white-space: nowrap;
+}
+
+/* OPERASI column: smallest possible */
+.table-custom td:last-child,
+.table-custom th:last-child {
+  width: 1%;
+  white-space: nowrap;
+}
+.table-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .nama-barang-cell { max-width: 150px; }
+  .jastiper-cell { max-width: 90px; }
+  .prod-thumb { width: 44px; height: 44px; }
+}
+
+
+/* Responsive */
 @media (max-width: 992px) {
-  .table-custom td, .table-custom th {
-    padding: 8px 10px;
-    font-size: 13px;
-  }
+  .table-custom { table-layout: auto; }
+  .nama-barang-cell { max-width: 140px; }
+  .jastiper-cell { max-width: 90px; } /* lebih kecil lagi saat mobile */
+  .prod-thumb { width: 48px; height: 48px; }
 }
-
-/* Optional: improve readability when header wraps into 2 lines */
-.table-custom thead th {
-  vertical-align: middle;  /* align multi-line header nicely */
-}
-
-/* ---------- Samakan judul halaman (form & table) ---------- */
-/* shared page title class */
-.page-title,
-.form-panel .form-title,
-.user-table-title {
-  font-size: 28px !important;     /* sama seperti form title */
-  font-weight: 700 !important;    /* sangat tegas */
-  color: #1f2d3d !important;      /* warna sama dg form title */
-  margin: 0 0 18px 0 !important;  /* jarak bawah konsisten */
-  line-height: 1.1 !important;
-}
-
-/* jika layout memasukkan <h2 class="page-title">... , pastikan juga */
-h1.page-title, h2.page-title, .page-title {
-  font-family: inherit;
-}
-/* Warna kuning khusus untuk judul Data Pengguna */
-.page-title,
-.user-table-title {
-    color: #F4B400 !important;
-}
-

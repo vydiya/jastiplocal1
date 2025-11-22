@@ -1,5 +1,5 @@
 {{-- resources/views/admin/pengguna/create.blade.php --}}
-@extends('admin.layout.app')
+@extends('layout.admin-app')
 
 @section('title', 'Tambah Pengguna')
 @section('page-title', 'Tambah Pengguna')

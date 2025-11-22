@@ -1,4 +1,5 @@
-@extends('admin.layout.app')
+@extends('layout.admin-app')
+
 
 @section('title', 'Jastiper - Admin')
 @section('page-title', 'Data Jastiper')

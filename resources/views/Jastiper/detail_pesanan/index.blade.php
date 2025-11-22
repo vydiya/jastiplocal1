@@ -1,5 +1,5 @@
 {{-- resources/views/jastiper/detail_pesanan/index.blade.php --}}
-@extends('admin.layout.app')
+@extends('layout.jastiper-app')
 
 @section('title', 'Detail Pesanan')
 @section('page-title', 'Detail Pesanan')
@@ -59,8 +59,8 @@
                             <td>{{ $d->id }}</td>
                             <td>{{ $d->pesanan_id }}</td>
                             <td>{{ $d->barang?->nama ?? '-' }}</td>
-                            <td>{{ $d->jumlah }}</td>
-                            <td>{{ number_format($d->subtotal, 2) }}</td>
+                            <td>{{ $d->barang?->nama_barang ?? '-' }}</td>
+<td>{{ number_format($d->subtotal, 2, ',', '.') }}</td>
                             <td class="col-actions">
                                 <div class="table-actions">
                                     <a href="{{ route('jastiper.detail-pesanan.edit', $d) }}" class="btn-action edit"

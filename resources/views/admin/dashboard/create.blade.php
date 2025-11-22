@@ -1,5 +1,6 @@
 {{-- resources/views/admin/dashboard/create.blade.php --}}
-@extends('admin.layout.app')
+@extends('layout.admin-app')
+
 
 @section('title','Create Item')
 

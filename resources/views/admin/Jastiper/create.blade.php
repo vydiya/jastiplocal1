@@ -1,5 +1,6 @@
 {{-- resources/views/admin/jastiper/create.blade.php --}}
-@extends('admin.layout.app')
+@extends('layout.admin-app')
+
 
 @section('title', 'Tambah Jastiper')
 @section('page-title', 'Tambah Jastiper')

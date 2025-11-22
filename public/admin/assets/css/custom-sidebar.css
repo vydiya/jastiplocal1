@@ -1,37 +1,44 @@
-/* custom-sidebar.css — override kecil untuk sidebar & icon */
+/* normalize sidebar links (tetap gunakan flex pada anchor) */
 .left-panel .navbar .navbar-nav > li > a {
   display: flex;
   align-items: center;
-  gap: 12px;               /* jarak antara icon dan teks */
+  gap: 12px;
   padding: 10px 18px;
-  color: #607d8b;          /* teks default */
+  color: #607d8b;
   font-size: 14px;
 }
 
+/* GANTI: normalisasi ikon supaya tidak menyebabkan baseline shift */
 .left-panel .navbar .navbar-nav > li > a img {
+  display: block;            /* penting: hilangkan baseline alignment issues */
   width: 20px;
-  height: auto;
+  height: 20px;              /* tetapkan height agar selalu sejajar */
+  object-fit: contain;
+  flex-shrink: 0;            /* jangan mengecil saat teks panjang */
+}
+
+/* Active state (tetap sama) */
+.left-panel .navbar .navbar-nav > li.active > a,
+.left-panel .navbar .navbar-nav > li > a:hover {
+  color: #2b6fc6;
+  background: #f6fbff;
+  border-left: 3px solid #2b6fc6;
+  padding-left: 11px; /* kompensasi border-left (agar lebar visual tetap konsisten) */
+}
+
+/* Pastikan teks selalu vertical-center */
+.left-panel .navbar .navbar-nav > li > a span {
+  line-height: 1;
   display: inline-block;
   vertical-align: middle;
 }
 
-/* Active state */
-.left-panel .navbar .navbar-nav > li.active > a,
-.left-panel .navbar .navbar-nav > li > a:hover {
-  color: #2b6fc6;          /* teks biru saat aktif/hover */
-  background: #f6fbff;
-  border-left: 3px solid #2b6fc6;
+/* Khusus: logout (biasanya item terakhir) jangan beri margin/position khusus */
+.left-panel .navbar .navbar-nav > li:last-child > a {
+  margin: 0;
 }
 
-/* Jika ingin icon ikut berubah warna saat active/hover (SVG menggunakan currentColor) */
+/* Jika ingin icon ikut berubah warna saat active/hover (SVG memakai currentColor) */
 .left-panel .navbar .navbar-nav > li > a img[color-change="true"] {
-  filter: none; /* default */
+  filter: none;
 }
-
-/* Responsive small tweak */
-@media (max-width: 1024px) {
-  .left-panel { width: 83px; }
-  .right-panel { margin-left: 83px; }
-  .left-panel .navbar .navbar-nav > li > a { gap: 8px; font-size: 0; }
-}
-

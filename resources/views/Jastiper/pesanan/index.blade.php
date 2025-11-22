@@ -1,5 +1,5 @@
 {{-- resources/views/jastiper/pesanan/index.blade.php --}}
-@extends('admin.layout.app')
+@extends('layout.jastiper-app')
 
 @section('title', 'Pesanan - Jastiper')
 @section('page-title', 'Data Pesanan')

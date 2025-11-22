@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('layout.jastiper-app')
 
 @section('title', 'Tambah Barang')
 @section('page-title', 'Tambah Barang')
@@ -45,7 +45,7 @@
 
         <div class="form-row">
             <div class="col form-group">
-                <label class="form-label">Harga (Rp) <span class="text-danger">*</span></label>
+                <label class="form-label"> Ongkos Jastip (Rp) <span class="text-danger">*</span></label>
                 <input type="number" step="0.01" name="harga" class="form-control" value="{{ old('harga', 0) }}" required>
             </div>
 
@@ -68,16 +68,6 @@
         <div class="form-group">
             <label class="form-label">Foto Barang (opsional)</label>
             <input type="file" name="foto_barang" class="form-control">
-        </div>
-
-        {{-- status_validasi --}}
-        <div class="form-group">
-            <label class="form-label">Status Validasi</label>
-            <select name="status_validasi" class="form-control">
-                <option value="pending" {{ old('status_validasi','pending')=='pending' ? 'selected':'' }}>pending</option>
-                <option value="disetujui" {{ old('status_validasi')=='disetujui' ? 'selected':'' }}>disetujui</option>
-                <option value="ditolak" {{ old('status_validasi')=='ditolak' ? 'selected':'' }}>ditolak</option>
-            </select>
         </div>
 
         {{-- tanggal_input --}}
