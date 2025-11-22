@@ -1,0 +1,93 @@
+/* custom-dashboard.css - overrides khusus dashboard */
+.cards-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.item-card {
+    width: 220px;
+    position: relative;
+    padding: 16px;
+    text-align: center;
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.item-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto 8px;
+}
+
+.item-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.08);
+}
+
+/* heart (favorite) button */
+.heart-toggle {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #ff6b6b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+}
+
+.heart-toggle.active {
+    background: var(--color-accent, #2B8CFF);
+    color: #fff;
+}
+
+/* pagination */
+.pagination {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.pagination .page {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.pagination .page.active {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: transparent;
+}
+
+/* small responsive */
+@media (max-width: 1000px) {
+    .cards-row {
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .user-sidebar {
+        display: none;
+    }
+
+    .rightpanel {
+        display: none;
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+}

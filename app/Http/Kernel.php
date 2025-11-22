@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
+<<<<<<< HEAD
     /**
      * Global HTTP middleware stack.
      */
@@ -19,6 +20,18 @@ class Kernel extends HttpKernel
     /**
      * Middleware groups.
      */
+=======
+    protected $middleware = [
+        // \App\Http\Middleware\TrustHosts::class,
+        \App\Http\Middleware\TrustProxies::class,
+        \Illuminate\Http\Middleware\HandleCors::class,
+        \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
+        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+        \App\Http\Middleware\TrimStrings::class,
+        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+    ];
+
+>>>>>>> a076a46315e9fd8c815c34326277a73459f4cc24
     protected $middlewareGroups = [
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
@@ -30,11 +43,17 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+<<<<<<< HEAD
             'throttle:api',
+=======
+            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
+>>>>>>> a076a46315e9fd8c815c34326277a73459f4cc24
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
+<<<<<<< HEAD
     /**
      * Route middleware (alias).
      */
@@ -42,6 +61,11 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+=======
+    protected $routeMiddleware = [
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+>>>>>>> a076a46315e9fd8c815c34326277a73459f4cc24
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
@@ -50,9 +74,14 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
+<<<<<<< HEAD
         // middleware role -> arahkan ke class CheckRole
         // daftar kedua alias (role & check.role) supaya route manapun yang memakai salah satu nama tetap work
         'role' => \App\Http\Middleware\CheckRole::class,
         'check.role' => \App\Http\Middleware\CheckRole::class,
+=======
+        // middleware custom (ada IsAdmin di proyekmu)
+        'is.admin' => \App\Http\Middleware\IsAdmin::class,
+>>>>>>> a076a46315e9fd8c815c34326277a73459f4cc24
     ];
 }

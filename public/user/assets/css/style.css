@@ -1,0 +1,143 @@
+/* ringkasan style (pakai untuk testing cepat) */
+:root {
+    --color-primary: #F6B21A;
+    --color-primary-dark: #E09A00;
+    --color-accent: #2B8CFF;
+    --color-highlight: rgba(246, 178, 26, 0.12)
+}
+
+.theme-blue {
+    --color-primary: #2B8CFF;
+    --color-primary-dark: #1F6FE6;
+    --color-accent: #F6B21A;
+    --color-highlight: rgba(43, 140, 255, 0.08)
+}
+
+body {
+    font-family: Poppins, Arial, sans-serif;
+    background: #f6f7f9;
+    color: #222;
+    margin: 0;
+    -webkit-font-smoothing: antialiased
+}
+
+.app {
+    display: flex;
+    min-height: 100vh
+}
+
+.sidebar {
+    width: 250px;
+    background: #fff;
+    padding: 28px 20px;
+    border-right: 1px solid #eee
+}
+
+.nav .nav-item {
+    display: block;
+    padding: 12px;
+    border-radius: 10px;
+    color: #9aa0a6;
+    text-decoration: none;
+    margin-bottom: 8px
+}
+
+.nav .nav-item.active {
+    background: linear-gradient(180deg, var(--color-primary), var(--color-primary-dark));
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08)
+}
+
+.promo-card {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+    color: #fff;
+    padding: 18px;
+    border-radius: 14px
+}
+
+.main-content {
+    flex: 1;
+    padding: 22px 28px
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px
+}
+
+.header .search input {
+    width: 420px;
+    padding: 12px;
+    border-radius: 24px;
+    border: 1px solid #eee
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(20, 20, 20, 0.04);
+    padding: 16px
+}
+
+.promo-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px;
+    border-radius: 14px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+    color: #fff
+}
+
+.cards-row {
+    display: flex;
+    gap: 18px;
+    margin-top: 16px
+}
+
+.item-card {
+    width: 220px;
+    text-align: center;
+    padding: 14px
+}
+
+.item-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 8px
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer
+}
+
+.btn-primary.small {
+    padding: 6px 8px;
+    font-size: 13px
+}
+
+.btn-primary.full {
+    width: 100%;
+    padding: 12px
+}
+
+.order-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.04)
+}
+
+.price {
+    color: var(--color-accent);
+    font-weight: 700
+}
