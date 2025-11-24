@@ -85,7 +85,7 @@ class AuthController extends Controller
             }
 
             // fallback (misal user biasa)
-            return redirect()->intended(route('home'));
+            return redirect()->intended(url('/'));
         }
 
         // gagal -> catat percobaan

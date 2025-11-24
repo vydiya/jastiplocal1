@@ -151,6 +151,8 @@
                             @endif
 
                             {{-- tombol teks tanpa ikon (tetap pakai ukuran yang kamu minta) --}}
+                            @if(empty($v->status_validasi))
+
                             <button type="button"
                                     class="btn-text btn-approve {{ (isset($v->status_validasi) && in_array($v->status_validasi,['disetujui','approved'])) ? 'active' : '' }}"
                                     data-id="{{ $v->id }}"
@@ -166,6 +168,7 @@
                                     aria-pressed="{{ (isset($v->status_validasi) && in_array($v->status_validasi,['ditolak','rejected','tolak'])) ? 'true' : 'false' }}">
                                 Tolak
                             </button>
+                            @endif
                         </div>
                     </td>
                 </tr>
@@ -193,7 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById('aksi-' + id);
         if (!container) return;
 
-        // disable semua tombol di baris
         const btns = container.querySelectorAll('.btn-text');
         btns.forEach(b => b.disabled = true);
 
@@ -215,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // update admin & tanggal di baris
             const row = document.getElementById('row-' + id);
             if (row) {
                 const adminCell = row.querySelector('.admin-col');
@@ -224,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (dateCell) dateCell.innerText = data.tanggal_validasi ?? '-';
             }
 
-            // toggle active class sesuai status dari server
             const aksiWrap = document.getElementById('aksi-' + id);
             if (!aksiWrap) return;
             const approveBtn = aksiWrap.querySelector('[data-action="setujui"]');
@@ -251,12 +251,10 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error(err);
             alert('Terjadi kesalahan jaringan / server.');
         } finally {
-            // enable tombol lagi
             btns.forEach(b => b.disabled = false);
         }
     }
 
-    // delegation handler
     document.body.addEventListener('click', function (e) {
         const el = e.target.closest('.btn-text');
         if (!el) return;

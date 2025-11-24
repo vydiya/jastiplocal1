@@ -1,4 +1,4 @@
-@extends('layout.admin-app')
+@extends('layout.admin-app') 
 {{-- untuk admin; untuk jastiper gunakan layout.jastiper-app --}}
 
 @section('title', 'Notifikasi')
@@ -14,11 +14,15 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <form method="GET" action="{{ url()->current() }}" style="display:flex; gap:8px; align-items:center;">
-            <input name="q" value="{{ $q ?? '' }}" class="user-search-input" type="text" placeholder="Cari notifikasi / jenis" style="padding:8px 12px; border:1px solid #DDE0E3; border-radius:8px; width:320px;">
-            <button type="submit" class="btn-search" style="padding:8px 18px; border-radius:8px; border:1px solid #2b6be6; background:#fff; color:#2b6be6;">Search</button>
+            <input name="q" value="{{ $q ?? '' }}" class="user-search-input" type="text"
+                   placeholder="Cari notifikasi / jenis"
+                   style="padding:8px 12px; border:1px solid #DDE0E3; border-radius:8px; width:320px;">
+            <button type="submit" class="btn-search"
+                    style="padding:8px 18px; border-radius:8px; border:1px solid #2b6be6; background:#fff; color:#2b6be6;">
+                Search
+            </button>
         </form>
-
-        <a href="{{ url()->current().'/create' }}" class="btn-add-user" style="padding:8px 14px; background:#2b6be6; color:white; border-radius:8px;">+ Tambah</a>
+        {{-- tombol tambah dihapus --}}
     </div>
 
     <div class="table-responsive">
@@ -31,7 +35,7 @@
                     <th>Pesan</th>
                     <th>Status</th>
                     <th>Tanggal</th>
-                    <th class="col-actions">Operasi</th>
+                    {{-- kolom operasi dihapus --}}
                 </tr>
             </thead>
             <tbody>
@@ -43,17 +47,13 @@
                     <td class="truncate" title="{{ $n->pesan }}">{{ Str::limit($n->pesan, 80) }}</td>
                     <td>{{ $n->status_baca }}</td>
                     <td>{{ $n->tanggal_kirim?->format('Y-m-d H:i') ?? '-' }}</td>
-                    <td class="col-actions">
-                        <a href="{{ url()->current().'/'.$n->id.'/edit' }}" class="btn-action edit"><img src="{{ asset('admin/assets/images/icons/edit.svg') }}" alt="Edit"></a>
-                        <form action="{{ url()->current().'/'.$n->id }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn-action del" onclick="return confirm('Hapus notifikasi?')"><img src="{{ asset('admin/assets/images/icons/delete.svg') }}" alt="Hapus"></button>
-                        </form>
-                    </td>
+                    {{-- tidak ada aksi edit/delete --}}
                 </tr>
                 @empty
-                <tr><td colspan="7" class="text-center">Belum ada notifikasi.</td></tr>
+                <tr>
+                    @php $colspan = 6; @endphp
+                    <td colspan="{{ $colspan }}" class="text-center">Belum ada notifikasi.</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

@@ -5,6 +5,21 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('admin/assets/css/custom-user_table.css') }}">
+<style>
+
+    .user-table-card .btn-add,
+    .btn-add,
+    .table-custom .btn-add,
+    .table-custom .add-btn,
+    .add-button {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    th.col-actions,
+    td.col-actions {
+        display: none !important;
+    }
+</style>
 @endpush
 
 @section('content')

@@ -1,0 +1,138 @@
+/* custom-sales-report.css
+   Card statistik & chart + layout tabel samping
+   Responsive: desktop two-column, mobile stacked
+*/
+
+/* Layout container */
+.sales-report-row {
+  display: grid;
+  grid-template-columns: 420px 1fr; /* chart card + table */
+  gap: 24px;
+  align-items: start;
+  margin: 18px 0;
+}
+
+/* Small screens: stack */
+@media (max-width: 880px) {
+  .sales-report-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card (chart) */
+.sales-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 6px 18px rgba(22,33,50,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 220px;
+}
+
+/* stat header left */
+.sales-card .stat-top {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Big number */
+.sales-card .stat-number {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  color: #111827; /* near black */
+}
+
+/* small delta under number */
+.sales-card .stat-delta {
+  font-size: 14px;
+  color: #10b981; /* green for positive */
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* chart area */
+.sales-card .chart-wrap {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* canvas should fill container */
+.sales-card canvas {
+  width: 100% !important;
+  max-height: 160px;
+}
+
+/* legend area */
+.sales-card .chart-legend {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:flex-end;
+  font-size:13px;
+  color:#6b7280;
+}
+
+/* pill for legend */
+.sales-card .legend-pill {
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding-left:8px;
+}
+
+/* small color box */
+.legend-box {
+  width:12px;
+  height:8px;
+  border-radius:2px;
+  display:inline-block;
+}
+
+/* Table card (right) - reuse project table styles but add spacing */
+.report-table-card {
+  background: transparent;
+  border-radius: 10px;
+  padding: 0;
+}
+
+/* Make table header match screenshot (soft blue header) */
+.table-custom thead th {
+  background: #e9f3fb; /* soft blue */
+  color: #0f172a;
+  font-weight:700;
+  border-bottom: none;
+}
+
+/* empty-state centering */
+.table-empty-state {
+  padding: 36px 12px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* add-button right (if still present) */
+.add-report-btn {
+  float: right;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #2b6be6;
+  color: #fff;
+  text-decoration:none;
+  display:inline-block;
+  font-weight:600;
+  box-shadow: 0 6px 12px rgba(43,107,230,0.18);
+}
+
+/* Small responsive tweaks */
+@media (max-width: 880px) {
+  .sales-card { order: 1; }
+  .report-table-card { order: 2; margin-top: 10px; }
+  .add-report-btn { float:none; display:block; margin-bottom: 10px; }
+}

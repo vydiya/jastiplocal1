@@ -1,0 +1,180 @@
+/* =========================
+   custom-table_khusus.css
+   Derived from custom-user_table.css
+   - hides automatic "add" button pseudo-elements
+   - hides operation column (edit/delete)
+   - keeps responsive & compact layout
+   ========================= */
+
+/* Container */
+.user-table-card {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 18px;
+  background: #fff;
+  border-radius: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Table base */
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-size: 14px;
+}
+
+/* Header */
+.table-custom thead th {
+  background: #e7f1ff;
+  color: #18405C;
+  font-weight: 700;
+  padding: 10px 12px;
+  text-align: left;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+/* Rounded header corners */
+.table-custom thead tr th:first-child  { border-top-left-radius: 8px;  }
+.table-custom thead tr th:last-child   { border-top-right-radius: 8px; }
+
+/* Body rows */
+.table-custom tbody tr {
+  background: #fff;
+  border-bottom: 1px solid #eef2f7;
+  transition: background .12s ease;
+}
+.table-custom tbody tr:hover { background: #f6fbff; }
+
+/* Default cells = single line */
+.table-custom td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.35;
+}
+
+/* Thumbnail Produk */
+.prod-thumb {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+/* Nama produk cell: allow wrapping but limited width */
+.nama-barang-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  white-space: normal;
+  max-width: 200px;
+  overflow-wrap: anywhere;
+}
+
+/* Jastiper compact cell */
+.jastiper-cell {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Price cell */
+.price-cell {
+  white-space: nowrap;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Table actions (visual only, but we'll hide the column if desired) */
+.table-actions {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+.btn-action {
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  background: #fff;
+  cursor: pointer;
+}
+.btn-action img { width: 16px; }
+
+/* Specific column behaviour: ID small, foto fixed, operasi smallest */
+.table-custom td:first-child,
+.table-custom th:first-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* Foto column: keep fixed-ish */
+.table-custom td:nth-child(2),
+.table-custom th:nth-child(2) {
+  white-space: nowrap;
+}
+
+/* status/admin/tanggal columns: keep nowrap */
+.table-custom td:nth-child(5),
+.table-custom td:nth-child(6),
+.table-custom td:nth-child(7) {
+  white-space: nowrap;
+}
+
+/* OPERASI column: hide it completely here (both header and cells) */
+.table-custom th.col-actions,
+.table-custom td.col-actions,
+.table-custom th:last-child,
+.table-custom td:last-child {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+/* ALSO hide any "add" button that may be injected via CSS pseudo elements
+   or by specific selectors from other files */
+.user-table-card .btn-add,
+.btn-add,
+.table-custom .btn-add,
+.table-custom .add-btn,
+.add-button,
+.user-table-card .add-button {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* If some templates inject a pseudo-element on the container header,
+   hide common variants too */
+.user-table-card:before,
+.user-table-card:after,
+.user-table-card .header:before,
+.user-table-card .header:after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Responsive tweaks */
+@media (max-width: 992px) {
+  .table-custom { table-layout: auto; }
+  .nama-barang-cell { max-width: 140px; }
+  .jastiper-cell { max-width: 90px; }
+  .prod-thumb { width: 48px; height: 48px; }
+}
+
+@media (max-width: 768px) {
+  .nama-barang-cell { max-width: 150px; }
+  .jastiper-cell { max-width: 90px; }
+  .prod-thumb { width: 44px; height: 44px; }
+}

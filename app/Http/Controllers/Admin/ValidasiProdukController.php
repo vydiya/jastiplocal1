@@ -28,31 +28,16 @@ class ValidasiProdukController extends Controller
         return view('admin.validasi-produk.index', compact('validasiProduks', 'q'));
     }
 
-    /**
-     * Terima AJAX action: setujui | tolak
-     * POST admin/validasi-produk/{validasi}/action
-     *
-     * Karena kolom `status_validasi` telah dihapus dari DB,
-     * controller tidak mencoba menulis kolom itu. Sebagai gantinya
-     * kita menyimpan admin_id & tanggal_validasi ke DB (kolom ada),
-     * dan mengembalikan status sebagai value di response JSON
-     * agar frontend bisa menampilkan / mewarnai tombol.
-     */
     public function action(Request $request, ValidasiProduk $validasi)
     {
         $request->validate([
             'action' => 'required|in:setujui,tolak'
         ]);
 
-        // tentukan status secara transient (tidak disimpan ke DB karena kolom di-drop)
         $status = $request->action === 'setujui' ? 'disetujui' : 'ditolak';
-
-        // update fields yang masih ada
+        $validasi->status_validasi = $status;
         $validasi->admin_id = Auth::id();
         $validasi->tanggal_validasi = now();
-
-        // Jika kamu punya kolom lain untuk menyimpan keputusan, simpan di situ.
-        // Karena kolom status_validasi tidak ada, kita *tidak* mencoba menulisnya.
         $validasi->save();
 
         return response()->json([
