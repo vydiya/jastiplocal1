@@ -37,7 +37,7 @@ class UlasanController extends Controller
 
         $ulasans = $query->paginate(15)->withQueryString();
 
-        return view('jastiper.ulasans.index', compact('ulasans', 'q'));
+        return view('Jastiper.ulasans.index', compact('ulasans', 'q'));
     }
 
     /**
@@ -52,6 +52,6 @@ class UlasanController extends Controller
             abort(403, 'Anda tidak berhak melihat ulasan ini.');
         }
 
-        return view('jastiper.ulasans.show', compact('ulasan'));
+        return view('Jastiper.ulasans.show', compact('ulasan'));
     }
 }
