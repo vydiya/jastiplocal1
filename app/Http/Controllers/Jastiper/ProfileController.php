@@ -18,7 +18,7 @@ class ProfileController extends Controller
 
         $rekening = $jastiper->rekening;
 
-        return view('jastiper.profile.index', compact('jastiper', 'rekening'));
+        return view('Jastiper.profile.index', compact('jastiper', 'rekening'));
     }
 
     public function edit()
@@ -28,7 +28,7 @@ class ProfileController extends Controller
 
         $rekening = $jastiper->rekening;
 
-        return view('jastiper.profile.edit', compact('jastiper', 'rekening'));
+        return view('Jastiper.profile.edit', compact('jastiper', 'rekening'));
     }
 
     public function update(Request $request)
@@ -92,7 +92,7 @@ class ProfileController extends Controller
         }
 
         return redirect()
-            ->route('jastiper.profile.index')
+            ->route('Jastiper.profile.index')
             ->with('success', 'Profil berhasil diperbarui!');
     }
 }
