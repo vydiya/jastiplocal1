@@ -39,7 +39,7 @@ class DetailPesananController extends Controller
             ->whereIn('pesanan_id', $pesananIds)
             ->paginate(15);
 
-        return view('jastiper.detail_pesanan.index', compact('detailPesanans'));
+        return view('Jastiper.detail_pesanan.index', compact('detailPesanans'));
     }
 
 
