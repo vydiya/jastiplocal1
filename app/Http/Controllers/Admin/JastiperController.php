@@ -13,7 +13,7 @@ class JastiperController extends Controller
     public function index(Request $request)
     {
         $jastipers = Jastiper::with(['user', 'rekening'])->orderBy('id', 'desc')->paginate(15);
-        return view('admin.Jastiper.index', compact('jastipers'));
+        return view('Admin.Jastiper.index', compact('jastipers'));
     }
 
     public function create()
