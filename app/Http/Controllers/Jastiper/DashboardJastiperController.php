@@ -110,7 +110,7 @@ class DashboardJastiperController extends Controller
         }
 
 
-        return view('jastiper.dashboard.index', compact(
+        return view('Jastiper.dashboard.index', compact(
             'totalPesanan',
             'pesananSelesai',
             'ulasan',
