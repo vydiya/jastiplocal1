@@ -13,7 +13,7 @@ class JastiperController extends Controller
     public function index(Request $request)
     {
         $jastipers = Jastiper::with(['user', 'rekening'])->orderBy('id', 'desc')->paginate(15);
-        return view('admin.jastiper.index', compact('jastipers'));
+        return view('admin.Jastiper.index', compact('jastipers'));
     }
 
     public function create()
@@ -21,7 +21,7 @@ class JastiperController extends Controller
         $users = User::orderBy('name')->get();
         $rekenings = Rekening::orderBy('nama_bank')->get();
         
-        return view('admin.jastiper.create', compact('users', 'rekenings'));
+        return view('admin.Jastiper.create', compact('users', 'rekenings'));
     }
 
     public function store(Request $request)
@@ -39,7 +39,7 @@ class JastiperController extends Controller
         
         Jastiper::create($data);
 
-        return redirect()->route('admin.jastiper.index')->with('success', 'Jastiper berhasil dibuat.');
+        return redirect()->route('admin.Jastiper.index')->with('success', 'Jastiper berhasil dibuat.');
     }
 
     public function edit(Jastiper $jastiper)
@@ -47,7 +47,7 @@ class JastiperController extends Controller
         $users = User::orderBy('name')->get();
         $rekenings = Rekening::orderBy('nama_bank')->get();
         
-        return view('admin.jastiper.edit', compact('jastiper','users', 'rekenings'));
+        return view('admin.Jastiper.edit', compact('jastiper','users', 'rekenings'));
     }
 
     public function update(Request $request, Jastiper $jastiper)
@@ -64,17 +64,17 @@ class JastiperController extends Controller
         $data['rating'] = $data['rating'] ?? 0.0;
         $jastiper->update($data);
 
-        return redirect()->route('admin.jastiper.index')->with('success', 'Jastiper berhasil diperbarui.');
+        return redirect()->route('admin.Jastiper.index')->with('success', 'Jastiper berhasil diperbarui.');
     }
 
     public function destroy(Jastiper $jastiper)
     {
         $jastiper->delete();
-        return redirect()->route('admin.jastiper.index')->with('success', 'Jastiper berhasil dihapus.');
+        return redirect()->route('admin.Jastiper.index')->with('success', 'Jastiper berhasil dihapus.');
     }
 
     public function show(Jastiper $jastiper)
     {
-        return view('admin.jastiper.show', compact('jastiper'));
+        return view('admin.Jastiper.show', compact('jastiper'));
     }
 }
