@@ -64,6 +64,6 @@ class LaporanKeuntunganJastiperController extends Controller
 
         $jumlahTransaksi = $totalDanaAlur->count();
         
-        return view('Jastiper.laporan-keuntungan.index', compact('transaksis', 'totalPenjualanNetto', 'totalPenjualanBruto', 'jumlahTransaksi', 'q'));
+        return view('jastiper.laporan-keuntungan.index', compact('transaksis', 'totalPenjualanNetto', 'totalPenjualanBruto', 'jumlahTransaksi', 'q'));
     }
 }
