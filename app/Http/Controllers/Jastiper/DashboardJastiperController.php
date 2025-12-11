@@ -19,7 +19,7 @@ class DashboardJastiperController extends Controller
         $jastiper = $user->jastiper;
 
         if (!$jastiper) {
-            abort(403, 'Anda bukan jastiper.');
+            abort(403, 'Anda bukan Jastiper.');
         }
         
         $jastiperId = $jastiper->id;
@@ -110,7 +110,7 @@ class DashboardJastiperController extends Controller
         }
 
 
-        return view('jastiper.dashboard.index', compact(
+        return view('Jastiper.dashboard.index', compact(
             'totalPesanan',
             'pesananSelesai',
             'ulasan',
