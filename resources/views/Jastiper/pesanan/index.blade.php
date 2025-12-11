@@ -104,7 +104,7 @@
     {{-- SEARCH + TOTAL --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="user-controls" style="display:flex; align-items:center; gap:8px;">
-            <form method="GET" action="{{ route('jastiper.pesanan.index') }}"
+            <form method="GET" action="{{ route('Jastiper.pesanan.index') }}"
                 style="display:flex; gap:8px; align-items:center;">
 
                 {{-- Pertahankan filter status saat mencari --}}
@@ -123,7 +123,7 @@
                 </button>
 
                 @if ($q)
-                <a href="{{ route('jastiper.pesanan.index', request()->except('q', 'page')) }}"
+                <a href="{{ route('Jastiper.pesanan.index', request()->except('q', 'page')) }}"
                     style="padding:8px 18px; border-radius:8px; border:1px solid #DDE0E3; background:#f8f9fa; color:#6c757d; text-decoration: none;">
                     Reset
                 </a>
@@ -149,26 +149,26 @@
         <li class="nav-item">
             {{-- Menggunakan [DIPROSES] sebagai filter tunggal --}}
             <a class="nav-link @if($isDiprosesActive) active @endif"
-                href="{{ route('jastiper.pesanan.index', array_merge(request()->except('status', 'page'), ['status' => ['DIPROSES'], 'page' => 1])) }}">
+                href="{{ route('Jastiper.pesanan.index', array_merge(request()->except('status', 'page'), ['status' => ['DIPROSES'], 'page' => 1])) }}">
                 DIPROSES
             </a>
         </li>
         <li class="nav-item">
             {{-- Menggunakan [SIAP_DIKIRIM] sebagai filter tunggal --}}
             <a class="nav-link @if($isSiapKirimActive) active @endif"
-                href="{{ route('jastiper.pesanan.index', array_merge(request()->except('status', 'page'), ['status' => ['SIAP_DIKIRIM'], 'page' => 1])) }}">
+                href="{{ route('Jastiper.pesanan.index', array_merge(request()->except('status', 'page'), ['status' => ['SIAP_DIKIRIM'], 'page' => 1])) }}">
                 DIKIRIM
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link @if($isRiwayatActive) active @endif"
-                href="{{ route('jastiper.pesanan.index', array_merge(request()->except('status', 'page'), ['status' => ['SELESAI', 'DIBATALKAN'], 'page' => 1])) }}">
+                href="{{ route('Jastiper.pesanan.index', array_merge(request()->except('status', 'page'), ['status' => ['SELESAI', 'DIBATALKAN'], 'page' => 1])) }}">
                 RIWAYAT
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link @if($isDefaultActive) active @endif"
-                href="{{ route('jastiper.pesanan.index', array_merge(request()->except('status', 'page'), ['status' => ['DIPROSES', 'SIAP_DIKIRIM'], 'page' => 1])) }}">
+                href="{{ route('Jastiper.pesanan.index', array_merge(request()->except('status', 'page'), ['status' => ['DIPROSES', 'SIAP_DIKIRIM'], 'page' => 1])) }}">
                 SEMUA
             </a>
         </li>
@@ -212,7 +212,7 @@
                             {{-- Tombol Ubah Status (Hanya muncul jika DIPROSES) --}}
                             @if (strtoupper($p->status_pesanan) == 'DIPROSES')
                             {{-- Menggunakan rute baru updateStatusToSiapDikirim --}}
-                            <form action="{{ route('jastiper.pesanan.update.siap.kirim', $p) }}" method="POST"
+                            <form action="{{ route('Jastiper.pesanan.update.siap.kirim', $p) }}" method="POST"
                                 style="display:inline;">
                                 @csrf
                                 @method('PUT')
@@ -331,7 +331,7 @@
         $('#pesanansTable').on('click', '.view-detail', function() {
             var pesananId = $(this).data('id');
             // Route menggunakan parameter pesanan ID (pastikan route name benar)
-            var url = "{{ route('jastiper.pesanan.show.data', ':id') }}";
+            var url = "{{ route('Jastiper.pesanan.show.data', ':id') }}";
             url = url.replace(':id', pesananId);
 
             // Reset tampilan modal
