@@ -39,13 +39,13 @@ class BarangController extends Controller
 
         $isJastiper = $jastiper ? true : false;
 
-        return view('jastiper.barang.index', compact('barangs', 'q', 'isJastiper'));
+        return view('Jastiper.barang.index', compact('barangs', 'q', 'isJastiper'));
     }
 
     public function create()
     {
         $kategoris = Kategori::orderBy('nama')->get();
-        return view('jastiper.barang.create', compact('kategoris'));
+        return view('Jastiper.barang.create', compact('kategoris'));
     }
 
     public function store(Request $request)
@@ -78,7 +78,7 @@ class BarangController extends Controller
         $barang = Barang::create($data);
 
 
-        return redirect()->route('jastiper.barang.index')->with('success', 'Barang berhasil ditambahkan dan menunggu validasi admin.');
+        return redirect()->route('Jastiper.barang.index')->with('success', 'Barang berhasil ditambahkan dan menunggu validasi admin.');
     }
 
     public function edit(Barang $barang)
@@ -90,7 +90,7 @@ class BarangController extends Controller
         }
 
         $kategoris = Kategori::orderBy('nama')->get();
-        return view('jastiper.barang.edit', compact('barang', 'kategoris'));
+        return view('Jastiper.barang.edit', compact('barang', 'kategoris'));
     }
 
     public function update(Request $request, Barang $barang)
@@ -120,7 +120,7 @@ class BarangController extends Controller
         }
 
         $barang->update($data);
-        return redirect()->route('jastiper.barang.index')->with('success', 'Barang berhasil diperbarui.');
+        return redirect()->route('Jastiper.barang.index')->with('success', 'Barang berhasil diperbarui.');
     }
 
     public function destroy(Barang $barang)
@@ -136,6 +136,6 @@ class BarangController extends Controller
         }
         $barang->delete();
 
-        return redirect()->route('jastiper.barang.index')->with('success', 'Barang dihapus.');
+        return redirect()->route('Jastiper.barang.index')->with('success', 'Barang dihapus.');
     }
 }
