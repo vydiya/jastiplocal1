@@ -52,7 +52,7 @@ class PesananController extends Controller
         
         $pesanans = $query->paginate(15)->withQueryString();
 
-        return view('Jastiper.pesanan.index', compact('pesanans','q', 'status')); 
+        return view('jastiper.pesanan.index', compact('pesanans','q', 'status')); 
     }
     public function showData(Pesanan $pesanan)
     {
@@ -102,7 +102,7 @@ class PesananController extends Controller
         $users = User::orderBy('name')->limit(200)->get();
         $jastipers = Jastiper::orderBy('nama_toko')->limit(200)->get();
 
-        return view('Jastiper.pesanan.edit', compact('pesanan','users','jastipers'));
+        return view('jastiper.pesanan.edit', compact('pesanan','users','jastipers'));
     }
 
     public function update(Request $request, Pesanan $pesanan)
@@ -126,7 +126,7 @@ class PesananController extends Controller
 
         $pesanan->update($data);
 
-        return redirect()->route('Jastiper.pesanan.index')->with('success', 'Pesanan berhasil diupdate.');
+        return redirect()->route('jastiper.pesanan.index')->with('success', 'Pesanan berhasil diupdate.');
     }
     
 public function updateStatusToSiapDikirim(Pesanan $pesanan)
@@ -149,11 +149,11 @@ public function updateStatusToSiapDikirim(Pesanan $pesanan)
                 $pesanan->user->notify(new PesananSiapDikirim($pesanan));
             }
 
-            return redirect()->route('Jastiper.pesanan.index')
+            return redirect()->route('jastiper.pesanan.index')
                 ->with('success', "Status Pesanan #{$pesanan->id} berhasil diubah menjadi SIAP DIKIRIM.");
         }
 
-        return redirect()->route('Jastiper.pesanan.index')
+        return redirect()->route('jastiper.pesanan.index')
             ->with('error', "Status Pesanan #{$pesanan->id} tidak dapat diubah ke SIAP DIKIRIM karena status saat ini adalah {$pesanan->status_pesanan}.");
     }
 
@@ -167,7 +167,7 @@ public function updateStatusToSiapDikirim(Pesanan $pesanan)
         }
 
         $pesanan->delete();
-        return redirect()->route('Jastiper.pesanan.index')->with('success', 'Pesanan dihapus.');
+        return redirect()->route('jastiper.pesanan.index')->with('success', 'Pesanan dihapus.');
     }
 
     // optional show route (jika butuh)
