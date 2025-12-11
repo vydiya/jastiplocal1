@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Jastiper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Barang;
-use App\Models\Jastiper;
+use App\Models\User;
 use App\Models\ValidasiProduk;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\Auth;
@@ -14,19 +14,15 @@ use Illuminate\Validation\Rule;
 
 class BarangController extends Controller
 {
-    // Index: tampilkan hanya barang milik jastiper yang login
     public function index(Request $request)
     {
         $user = Auth::user();
-        $jastiper = $user->jastiper; // relation, bisa null
+        $jastiper = $user->jastiper; 
         $q = $request->query('q');
 
-        // Jika user belum terdaftar sebagai jastiper, tampilkan fallback sementara (development).
         if (!$jastiper) {
-            // Opsi: tampilkan semua barang supaya UI bisa ditata
             $query = Barang::with(['kategori'])->orderBy('created_at', 'desc');
         } else {
-            // Normal: tampilkan hanya barang milik jastiper yang login
             $query = Barang::where('jastiper_id', $jastiper->id)
                 ->with(['kategori'])
                 ->orderBy('created_at', 'desc');
@@ -46,18 +42,18 @@ class BarangController extends Controller
         return view('jastiper.barang.index', compact('barangs', 'q', 'isJastiper'));
     }
 
-    // Show form create
     public function create()
     {
         $kategoris = Kategori::orderBy('nama')->get();
         return view('jastiper.barang.create', compact('kategoris'));
     }
 
-    // Store barang (otomatis set jastiper_id dari user yang login)
     public function store(Request $request)
     {
         $user = Auth::user();
+        $user = User::find($user->id);
         $jastiper = $user->jastiper;
+
         if (!$jastiper)
             abort(403, 'Anda belum terdaftar sebagai jastiper.');
 
@@ -73,28 +69,18 @@ class BarangController extends Controller
         ]);
 
         $data['jastiper_id'] = $jastiper->id;
-        // jangan set admin_id di sini kecuali memang diperlukan
-        // $data['admin_id'] = $user->id; // biasanya admin diisi saat validasi
 
         if ($request->hasFile('foto_barang')) {
             $path = $request->file('foto_barang')->store('barangs', 'public');
             $data['foto_barang'] = $path;
         }
 
-        // simpan barang
         $barang = Barang::create($data);
 
-        // buat record validasi agar admin bisa memprosesnya
-        ValidasiProduk::create([
-            'barang_id' => $barang->id,
-            // jangan set admin_id / tanggal_validasi sekarang — admin yang akan set
-            // jika tabel validasi_produks punya kolom status_validasi default 'pending' maka akan otomatis pending
-        ]);
 
         return redirect()->route('jastiper.barang.index')->with('success', 'Barang berhasil ditambahkan dan menunggu validasi admin.');
     }
 
-    // Edit
     public function edit(Barang $barang)
     {
         $user = Auth::user();
@@ -107,7 +93,6 @@ class BarangController extends Controller
         return view('jastiper.barang.edit', compact('barang', 'kategoris'));
     }
 
-    // Update
     public function update(Request $request, Barang $barang)
     {
         $user = Auth::user();
@@ -138,7 +123,6 @@ class BarangController extends Controller
         return redirect()->route('jastiper.barang.index')->with('success', 'Barang berhasil diperbarui.');
     }
 
-    // Destroy
     public function destroy(Barang $barang)
     {
         $user = Auth::user();

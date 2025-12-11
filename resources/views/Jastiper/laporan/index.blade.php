@@ -20,9 +20,9 @@
             </button>
         </form>
 
-        <a href="{{ route('jastiper.laporan.create') }}" class="btn-add-user" style="padding:8px 14px; background:#2b6be6; color:white; border-radius:8px;">
+        {{-- <a href="{{ route('jastiper.laporan.create') }}" class="btn-add-user" style="padding:8px 14px; background:#2b6be6; color:white; border-radius:8px;">
             + Tambah Laporan
-        </a>
+        </a> --}}
     </div>
 
     @if(session('success'))
@@ -39,7 +39,7 @@
                     <th>Dana Masuk</th>
                     <th>Status</th>
                     <th>Tanggal Masuk</th>
-                    <th class="col-actions">Operasi</th>
+                    {{-- <th class="col-actions">Operasi</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -51,7 +51,7 @@
                     <td>{{ number_format($l->dana_masuk,0,',','.') }}</td>
                     <td>{{ ucfirst($l->status) }}</td>
                     <td>{{ optional($l->tanggal_masuk)->format('Y-m-d H:i') ?? $l->created_at->format('Y-m-d H:i') }}</td>
-                    <td class="col-actions" style="text-align:right;">
+                    {{-- <td class="col-actions" style="text-align:right;">
                         <div class="table-actions">
                             <a href="{{ route('jastiper.laporan.edit', $l) }}" class="btn-action edit" title="Edit">
                                 <img src="{{ asset('admin/assets/images/icons/edit.svg') }}" alt="Edit">
@@ -65,7 +65,7 @@
                                 </button>
                             </form>
                         </div>
-                    </td>
+                    </td> --}}
                 </tr>
                 @empty
                 <tr>

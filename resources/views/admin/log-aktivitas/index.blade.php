@@ -60,9 +60,9 @@
         </table>
     </div>
 
-    <div class="mt-3">
+    {{-- <div class="mt-3">
         {{ $logs->links() }}
-    </div>
+    </div> --}}
 
 </div>
 @endsection

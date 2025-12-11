@@ -1,67 +1,92 @@
 <?php
-namespace App\Http\Controllers\Admin;
+
+namespace App\Http\Controllers\Admin; // Diubah dari App\Http\Controllers\Admin
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Notifikasi;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Notifications\DatabaseNotification; 
+use App\Models\User; 
+// use Carbon\Carbon; // Tidak diperlukan di controller ini, bisa dihapus
 
 class NotifikasiController extends Controller
 {
+    /**
+     * Menampilkan daftar notifikasi untuk pengguna yang sedang login.
+     */
     public function index(Request $request)
     {
-        $q = $request->query('q');
-        $query = Notifikasi::with('user')->orderBy('tanggal_kirim', 'desc');
+        $user = Auth::user(); 
+        $search = $request->query('search');
+        $status = $request->query('status', 'semua');
 
-        if ($q) {
-            $query->where(function($w) use ($q){
-                $w->where('pesan','like',"%{$q}%")
-                  ->orWhere('jenis_notifikasi','like',"%{$q}%")
-                  ->orWhereHas('user', fn($u)=> $u->where('name','like',"%{$q}%"));
-            });
+        $query = $user->notifications(); 
+
+        // --- Logika Pencarian ---
+        if ($search) {
+            $query->where('data', 'like', "%{$search}%");
         }
 
-        $notifikasis = $query->paginate(20)->withQueryString();
-        return view('admin.notifikasi.index', compact('notifikasis','q'));
+        // --- Logika Filter Status ---
+        if ($status === 'belum_baca') {
+            $query->whereNull('read_at');
+        } elseif ($status === 'sudah_baca') {
+            $query->whereNotNull('read_at');
+        }
+
+        $notifikasis = $query->orderBy('created_at', 'desc')
+                            ->paginate(15)
+                            ->withQueryString();
+
+        // Menggunakan unreadNotifications() untuk query count yang efisien
+        $belum_baca_count = $user->unreadNotifications()->count(); 
+
+        // Jika Anda memindahkan controller, pastikan path view ini benar:
+        // Jika Anda menargetkan tampilan User/Jastiper, ganti 'admin.notifikasi.index'
+        return view('admin.notifikasi.index', compact('notifikasis', 'search', 'status', 'belum_baca_count'));
     }
 
-    public function create()
+    // ---
+
+    /**
+     * Menandai satu notifikasi sebagai sudah dibaca.
+     */
+    public function markAsRead(DatabaseNotification $notification)
     {
-        return view('admin.notifikasi.create');
+        // Validasi kepemilikan notifikasi (Security check)
+        if ($notification->notifiable_id != Auth::id()) {
+            abort(403, 'Akses ditolak.');
+        }
+        
+        $notification->markAsRead();
+        return back()->with('success', 'Notifikasi berhasil ditandai sudah dibaca.');
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'jenis_notifikasi' => 'required|in:pembayaran,pesanan,ulasan,sistem',
-            'pesan' => 'required|string',
-            'status_baca' => 'nullable|in:belum,sudah',
-        ]);
-        $data['tanggal_kirim'] = now();
-        Notifikasi::create($data);
-        return redirect()->route('admin.notifikasi.index')->with('success','Notifikasi dibuat.');
-    }
+    // ---
 
-    public function edit(Notifikasi $notifikasi)
+    /**
+     * Menandai semua notifikasi sebagai sudah dibaca.
+     */
+    public function markAllAsRead()
     {
-        return view('admin.notifikasi.edit', compact('notifikasi'));
+        // Menandai semua notifikasi yang belum dibaca milik user ini sebagai sudah dibaca
+        Auth::user()->unreadNotifications->markAsRead();
+        return back()->with('success', 'Semua notifikasi berhasil ditandai sudah dibaca.');
     }
+    
+    // ---
 
-    public function update(Request $request, Notifikasi $notifikasi)
+    /**
+     * Menghapus satu notifikasi.
+     */
+    public function destroy(DatabaseNotification $notification)
     {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'jenis_notifikasi' => 'required|in:pembayaran,pesanan,ulasan,sistem',
-            'pesan' => 'required|string',
-            'status_baca' => 'nullable|in:belum,sudah',
-        ]);
-        $notifikasi->update($data);
-        return redirect()->route('admin.notifikasi.index')->with('success','Notifikasi diperbarui.');
-    }
-
-    public function destroy(Notifikasi $notifikasi)
-    {
-        $notifikasi->delete();
-        return redirect()->route('admin.notifikasi.index')->with('success','Notifikasi dihapus.');
+        // Validasi kepemilikan notifikasi (Security check)
+        if ($notification->notifiable_id != Auth::id()) {
+            abort(403, 'Akses ditolak.');
+        }
+        
+        $notification->delete();
+        return back()->with('success', 'Notifikasi berhasil dihapus.');
     }
 }

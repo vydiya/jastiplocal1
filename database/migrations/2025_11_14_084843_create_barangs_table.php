@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->integer('stok')->default(0);
             $table->enum('is_available', ['yes','no'])->default('yes');
             $table->string('foto_barang', 255)->nullable();
-            $table->enum('status_validasi', ['pending','disetujui','ditolak'])->default('pending');
             $table->timestamp('tanggal_input')->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -4,109 +4,139 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Jastiper; 
+use App\Models\Pesanan;
+use App\Models\AlurDana;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    /**
-     * Tampilkan halaman dashboard (index.blade.php)
-     */
     public function index()
     {
-        // Jika mau kirim data ke view, buat array/data di sini
-        // contoh: $stats = [...];
-        // return view('admin.dashboard.index', compact('stats'));
+        $lastTwelveMonths = Carbon::now()->subMonths(11)->startOfMonth();
+        
+        
+        $totalUsers = User::count(); 
 
-        return view('admin.dashboard.index');
-    }
+        $totalJastipers = Jastiper::count();
+        
+        $pembayaranDitinjau = Pesanan::where('status_pesanan', 'MENUNGGU_KONFIRMASI_ADMIN')->count(); 
+        
+        $pendapatanAdminTotal = AlurDana::where('jenis_transaksi', 'PELEPASAN_DANA')
+                                        ->where('status_konfirmasi', 'DIKONFIRMASI')
+                                        ->sum('biaya_admin'); 
+                                        
+        $danaDitahan = Pesanan::where('status_pesanan', 'SELESAI')
+                              ->where('status_dana_jastiper', 'TERTAHAN')
+                              ->sum('total_harga'); 
 
-    /**
-     * Tampilkan form untuk membuat data baru
-     */
-    public function create()
-    {
-        return view('admin.dashboard.create');
-    }
+        $totalTransaksiSelesai = Pesanan::where('status_pesanan', 'SELESAI')->count();
 
-    /**
-     * Simpan data baru (store)
-     */
-    public function store(Request $request)
-    {
-        // Contoh validasi sederhana:
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
 
-        // TODO: simpan ke database (Model belum disediakan) ->
-        // Example:
-        // Item::create($validated);
 
-        // Untuk sekarang hanya beri feedback dan redirect
-        return redirect()->route('admin.dashboard.index')
-                         ->with('success', 'Data berhasil disimpan (stub).');
-    }
+        $pendapatanAdminRaw = AlurDana::where('jenis_transaksi', 'PELEPASAN_DANA')
+                                     ->where('status_konfirmasi', 'DIKONFIRMASI')
+                                     ->where('created_at', '>=', $lastTwelveMonths)
+                                     ->select(
+                                         DB::raw('YEAR(created_at) as tahun'),
+                                         DB::raw('MONTH(created_at) as bulan'),
+                                         DB::raw('SUM(biaya_admin) as total')
+                                     )
+                                     ->groupBy('tahun', 'bulan')
+                                     ->orderBy('tahun', 'asc')
+                                     ->orderBy('bulan', 'asc')
+                                     ->get()
+                                     ->keyBy(function ($item) {
+                                         return $item->tahun . '-' . $item->bulan;
+                                     })
+                                     ->toArray();
 
-    /**
-     * Tampilkan detail item (show)
-     */
-    public function show($id)
-    {
-        // TODO: ambil data dari model, contoh:
-        // $item = Item::findOrFail($id);
-        // return view('admin.dashboard.show', compact('item'));
+        $dataPendapatan = [];
+        $labelsPendapatan = [];
+        for ($i = 0; $i < 12; $i++) {
+            $date = Carbon::now()->subMonths(11 - $i);
+            $key = $date->year . '-' . $date->month;
+            
+            $dataPendapatan[] = $pendapatanAdminRaw[$key]['total'] ?? 0;
+            $labelsPendapatan[] = $date->translatedFormat('M'); 
+        }
 
-        // Karena belum ada model, kita kirim id sebagai contoh
-        return view('admin.dashboard.show', ['id' => $id]);
-    }
-
-    /**
-     * Tampilkan form edit untuk item
-     */
-    public function edit($id)
-    {
-        // TODO: ambil data dari model, contoh:
-        // $item = Item::findOrFail($id);
-        // return view('admin.dashboard.edit', compact('item', 'id'));
-
-        // Stub:
-        $item = (object)[
-            'id' => $id,
-            'name' => 'Contoh Nama '.$id,
-            'description' => 'Contoh deskripsi untuk item '.$id,
+        $menungguKonfirmasi = Pesanan::where('status_pesanan', 'MENUNGGU_KONFIRMASI_ADMIN')->count();
+        $pembayaranSelesaiCount = Pesanan::where('status_pesanan', '!=', 'MENUNGGU_KONFIRMASI_ADMIN')->count();
+                                      
+        $konfirmasiChartData = [
+            'MENUNGGU' => $menungguKonfirmasi,
+            'SELESAI'  => $pembayaranSelesaiCount,
         ];
 
-        return view('admin.dashboard.edit', compact('item', 'id'));
-    }
+        $danaTertahanCount = Pesanan::where('status_pesanan', 'SELESAI')
+                                    ->where('status_dana_jastiper', 'TERTAHAN')
+                                    ->count();
+        $danaDilepas = Pesanan::where('status_pesanan', 'SELESAI')
+                               ->where('status_dana_jastiper', 'DILEPASKAN')
+                               ->count();
 
-    /**
-     * Simpan perubahan (update)
-     */
-    public function update(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+        $danaChartData = [
+            'TERTAHAN' => $danaTertahanCount,
+            'DILEPAS'  => $danaDilepas,
+        ];
+        
+        $userRaw = User::where('created_at', '>=', $lastTwelveMonths)
+                        ->select(
+                            DB::raw('YEAR(created_at) as tahun'),
+                            DB::raw('MONTH(created_at) as bulan'),
+                            DB::raw('COUNT(id) as total')
+                        )
+                        ->groupBy('tahun', 'bulan')
+                        ->orderBy('tahun', 'asc')
+                        ->orderBy('bulan', 'asc')
+                        ->get()
+                        ->keyBy(function ($item) {
+                            return $item->tahun . '-' . $item->bulan;
+                        })
+                        ->toArray();
+        
+        $jastiperRaw = Jastiper::where('created_at', '>=', $lastTwelveMonths)
+                                ->select(
+                                    DB::raw('YEAR(created_at) as tahun'),
+                                    DB::raw('MONTH(created_at) as bulan'),
+                                    DB::raw('COUNT(id) as total')
+                                )
+                                ->groupBy('tahun', 'bulan')
+                                ->orderBy('tahun', 'asc')
+                                ->orderBy('bulan', 'asc')
+                                ->get()
+                                ->keyBy(function ($item) {
+                                    return $item->tahun . '-' . $item->bulan;
+                                })
+                                ->toArray();
 
-        // TODO: update model:
-        // $item = Item::findOrFail($id);
-        // $item->update($validated);
 
-        return redirect()->route('admin.dashboard.show', $id)
-                         ->with('success', 'Data berhasil diupdate (stub).');
-    }
+        $dataPelanggan = [];
+        $dataJastiper = [];
+        for ($i = 0; $i < 12; $i++) {
+            $date = Carbon::now()->subMonths(11 - $i);
+            $key = $date->year . '-' . $date->month;
+            
+            $dataPelanggan[] = $userRaw[$key]['total'] ?? 0;
+            $dataJastiper[] = $jastiperRaw[$key]['total'] ?? 0;
+        }
 
-    /**
-     * Hapus item
-     */
-    public function destroy($id)
-    {
-        // TODO: hapus model:
-        // $item = Item::findOrFail($id);
-        // $item->delete();
-
-        return redirect()->route('admin.dashboard.index')
-                         ->with('success', 'Data berhasil dihapus (stub).');
+        return view('admin.dashboard.index', compact(
+            'totalUsers',
+            'totalJastipers',
+            'pembayaranDitinjau',
+            'danaDitahan',
+            'totalTransaksiSelesai',
+            'pendapatanAdminTotal',
+            'dataPendapatan',
+            'labelsPendapatan',
+            'konfirmasiChartData',
+            'danaChartData',
+            'dataPelanggan',
+            'dataJastiper'
+        ));
     }
 }

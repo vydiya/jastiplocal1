@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JastiGo - Login</title>
+<title>JastGo - Login</title>
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 <style>
   body{ display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f8f9fa;font-family:Arial, sans-serif;}
@@ -15,6 +15,7 @@
   .btn-primary{ width:100%;padding:10px;background:#007bff;color:#fff;border:none;border-radius:6px;font-size:16px;cursor:pointer;}
   .alert-danger{ color:#721c24;background:#f8d7da;padding:8px;border-radius:6px;margin-bottom:10px;border:1px solid #f5c6cb;}
   .text-error{ color:#c00;font-size:.9rem;margin-top:6px;}
+  .link{ margin-top:10px;text-align:center;font-size:14px; }
 </style>
 </head>
 <body>
@@ -53,6 +54,11 @@
       <div class="form-group">
         <button type="submit" class="btn-primary">LOGIN</button>
       </div>
+
+      <div class="link">
+        Belum punya akun? <a href="{{ route('register') }}">Register</a>
+      </div>
+
     </form>
   </div>
 </body>

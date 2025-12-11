@@ -7,6 +7,9 @@ use App\Models\Ulasan;
 
 class UlasanController extends Controller
 {
+    /**
+     * Tampilkan daftar semua ulasan (untuk Admin) dengan fitur pencarian.
+     */
     public function index(Request $request)
     {
         $q = $request->query('q');
@@ -28,14 +31,23 @@ class UlasanController extends Controller
         return view('admin.ulasans.index', compact('ulasans','q'));
     }
 
-    public function show(Ulasan $ulasans)
+    /**
+     * Tampilkan detail ulasan tunggal.
+     * Menggunakan $ulasan (singular) sebagai parameter.
+     */
+    public function show(Ulasan $ulasan)
     {
-        return view('admin.ulasans.show', compact('ulasans'));
+        $ulasan->load(['user', 'jastiper', 'pesanan']);
+        return view('admin.ulasans.show', compact('ulasan'));
     }
 
-    public function destroy(Ulasan $ulasans)
+    /**
+     * Hapus ulasan.
+     * Menggunakan $ulasan (singular) sebagai parameter.
+     */
+    public function destroy(Ulasan $ulasan)
     {
-        $ulasans->delete();
-        return redirect()->route('admin.ulasans.index')->with('success','Ulasan dihapus.');
+        $ulasan->delete();
+        return redirect()->route('admin.ulasans.index')->with('success','Ulasan berhasil dihapus.');
     }
 }

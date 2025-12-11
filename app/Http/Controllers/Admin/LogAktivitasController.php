@@ -12,14 +12,8 @@ class LogAktivitasController extends Controller
 {
     public function __construct()
     {
-        // pastikan hanya user yang terautentikasi yang bisa mengakses
         $this->middleware('auth');
-        // jika ingin membatasi ke role admin, tambahkan middleware custom / gate di sini
     }
-
-    /**
-     * Index: daftar log dengan pencarian sederhana.
-     */
     public function index(Request $request)
     {
         $q = $request->query('q');
@@ -41,9 +35,6 @@ class LogAktivitasController extends Controller
         return view('admin.log-aktivitas.index', compact('logs', 'q'));
     }
 
-    /**
-     * Show: detail log (binding sebagai $log supaya konsisten di view)
-     */
     public function show(LogAktivitas $log)
     {
         return view('admin.log-aktivitas.show', compact('log'));
@@ -109,7 +100,6 @@ class LogAktivitasController extends Controller
 
         $callback = function () use ($logs) {
             $handle = fopen('php://output', 'w');
-            // header CSV
             fputcsv($handle, ['ID', 'User', 'Aksi', 'Deskripsi', 'Waktu']);
             foreach ($logs as $l) {
                 fputcsv($handle, [

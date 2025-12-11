@@ -56,10 +56,8 @@
 @section('content')
 
     <div class="user-table-card">
-        {{-- JUDUL HALAMAN --}}
         <h2 class="user-table-title">Data Pengguna</h2>
 
-        {{-- SEARCH + TOTAL + ADD --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
 
             <div class="user-controls" style="display:flex; align-items:center; gap:8px;">
@@ -79,10 +77,10 @@
                 </div>
             </div>
 
-            <a href="{{ route('admin.pengguna.create') }}" class="btn-add-user"
+            {{-- <a href="{{ route('admin.pengguna.create') }}" class="btn-add-user"
                 style="padding:8px 14px; background:#007bff; color:white; border-radius:8px;">
                 + Tambah Pengguna
-            </a>
+            </a> --}}
         </div>
 
         {{-- TABLE --}}
@@ -99,7 +97,7 @@
                         <th class="col-alamat">Alamat</th>
                         <th class="col-role">Role</th>
                         <th class="col-tgl">Tanggal Daftar</th>
-                        <th class="col-actions" style="text-align:right">Operasi</th>
+                        {{-- <th class="col-actions" style="text-align:right">Operasi</th> --}}
                     </tr>
                 </thead>
 
@@ -119,14 +117,12 @@
                             <td class="col-tgl">{{ $user->tanggal_daftar ? $user->tanggal_daftar->format('Y-m-d') : '-' }}</td>
 
                             <!-- Operasi: hanya ICON Edit dan Delete (tanpa teks) -->
-                            <td class="col-actions">
+                            {{-- <td class="col-actions">
                                 <div class="table-actions">
-                                    <!-- EDIT (ikon saja) -->
                                     <a href="{{ route('admin.pengguna.edit', $user) }}" class="btn-action edit" title="Edit">
                                         <img src="{{ asset('admin/assets/images/icons/edit.svg') }}" alt="Edit">
                                     </a>
 
-                                    <!-- DELETE (ikon saja) -->
                                     <form action="{{ route('admin.pengguna.destroy', $user) }}" method="POST"
                                         onsubmit="return confirm('Hapus pengguna {{ addslashes($user->name) }}?')"
                                         style="display:inline;">
@@ -137,7 +133,7 @@
                                         </button>
                                     </form>
                                 </div>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                 </tbody>
@@ -166,7 +162,7 @@
                 searching: false,
                 ordering: true,
                 columnDefs: [
-                    { orderable: false, targets: [9] } // kolom Operasi (index dimulai 0)
+                    { orderable: false, targets: [8] } // kolom Operasi (index dimulai 0)
                 ]
             });
 

@@ -17,12 +17,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
 
+    
     {{-- Template CSS dari public/admin/assets/css --}}
     <link rel="stylesheet" href="{{ asset('admin/assets/css/cs-skin-elastic.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/custom-sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/custom-dashboard.css') }}">
-
+<!-- Font Awesome 5 (untuk icon fas fa-trash, fas fa-check, fas fa-bell-slash, dll) -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-dymI4R4Ggw7M8O6exdFv+DE5jBqFaUG2RglN6E466+vWXTjhBMWrMUR3pvN8I2c2MvmFo0bKjrwG7Y9OZz1xkQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- optional css push --}}
     @stack('styles')
 

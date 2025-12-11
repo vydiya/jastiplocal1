@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+       'jastiper' => [
+        'driver' => 'session',
+        'provider' => 'jastipers', // Harus menunjuk ke Provider yang Anda buat di bawah
+    ],
     ],
 
     /*
@@ -65,10 +69,10 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+      'jastipers' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Jastiper::class, // Pastikan namespace ini benar
+    ],
     ],
 
     /*
