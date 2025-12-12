@@ -92,7 +92,7 @@ class ProfileController extends Controller
         }
 
         return redirect()
-            ->route('Jastiper.profile.index')
+            ->route('jastiper.profile.index')
             ->with('success', 'Profil berhasil diperbarui!');
     }
 }

@@ -78,7 +78,7 @@ class BarangController extends Controller
         $barang = Barang::create($data);
 
 
-        return redirect()->route('Jastiper.barang.index')->with('success', 'Barang berhasil ditambahkan dan menunggu validasi admin.');
+        return redirect()->route('jastiper.barang.index')->with('success', 'Barang berhasil ditambahkan dan menunggu validasi admin.');
     }
 
     public function edit(Barang $barang)
@@ -120,7 +120,7 @@ class BarangController extends Controller
         }
 
         $barang->update($data);
-        return redirect()->route('Jastiper.barang.index')->with('success', 'Barang berhasil diperbarui.');
+        return redirect()->route('jastiper.barang.index')->with('success', 'Barang berhasil diperbarui.');
     }
 
     public function destroy(Barang $barang)
@@ -136,6 +136,6 @@ class BarangController extends Controller
         }
         $barang->delete();
 
-        return redirect()->route('Jastiper.barang.index')->with('success', 'Barang dihapus.');
+        return redirect()->route('jastiper.barang.index')->with('success', 'Barang dihapus.');
     }
 }

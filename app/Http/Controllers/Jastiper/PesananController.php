@@ -126,7 +126,7 @@ class PesananController extends Controller
 
         $pesanan->update($data);
 
-        return redirect()->route('Jastiper.pesanan.index')->with('success', 'Pesanan berhasil diupdate.');
+        return redirect()->route('jastiper.pesanan.index')->with('success', 'Pesanan berhasil diupdate.');
     }
     
 public function updateStatusToSiapDikirim(Pesanan $pesanan)
@@ -149,11 +149,11 @@ public function updateStatusToSiapDikirim(Pesanan $pesanan)
                 $pesanan->user->notify(new PesananSiapDikirim($pesanan));
             }
 
-            return redirect()->route('Jastiper.pesanan.index')
+            return redirect()->route('jastiper.pesanan.index')
                 ->with('success', "Status Pesanan #{$pesanan->id} berhasil diubah menjadi SIAP DIKIRIM.");
         }
 
-        return redirect()->route('Jastiper.pesanan.index')
+        return redirect()->route('jastiper.pesanan.index')
             ->with('error', "Status Pesanan #{$pesanan->id} tidak dapat diubah ke SIAP DIKIRIM karena status saat ini adalah {$pesanan->status_pesanan}.");
     }
 
@@ -167,7 +167,7 @@ public function updateStatusToSiapDikirim(Pesanan $pesanan)
         }
 
         $pesanan->delete();
-        return redirect()->route('Jastiper.pesanan.index')->with('success', 'Pesanan dihapus.');
+        return redirect()->route('jastiper.pesanan.index')->with('success', 'Pesanan dihapus.');
     }
 
     // optional show route (jika butuh)
@@ -178,7 +178,7 @@ public function updateStatusToSiapDikirim(Pesanan $pesanan)
             abort(404);
         }
         
-        $pesanan->load(['user','Jastiper','detailPesanans','pembayaran']);
+        $pesanan->load(['user','jastiper','detailPesanans','pembayaran']);
         return view('Jastiper.pesanan.show', compact('pesanan'));
     }
 }
