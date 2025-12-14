@@ -86,13 +86,7 @@
                     </a>
                 </li>
 
-                <li class="{{ request()->is('admin/bantuan*') ? 'active' : '' }}">
-                    <a href="{{ url('admin/bantuan') }}">
-                        <img src="{{ asset('admin/assets/images/icons/bantuan.svg') }}"
-                            style="width:20px;margin-right:12px" alt="Bantuan">
-                        Bantuan
-                    </a>
-                </li>
+
                 <li>
                     <form action="{{ route('logout') }}" method="POST" style="margin:0; padding:0;">
                         @csrf

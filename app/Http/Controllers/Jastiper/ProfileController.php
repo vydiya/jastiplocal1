@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;   // pastikan ini ada
+use Illuminate\Support\Facades\Log;
 use App\Models\Jastiper;
 
 class ProfileController extends Controller
@@ -33,13 +33,6 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        Log::info('=== PROFILE UPDATE DIPANGGIL ===');
-        Log::info('Request all(): ', $request->all());
-        Log::info('Request files(): ', $request->allFiles());
-        Log::info('hasFile profile_toko ? ', ['ada' => $request->hasFile('profile_toko')]);
-        Log::info('hapus_foto ? ', ['value' => $request->input('hapus_foto')]);
-
-
         // ==== VALIDASI ====
         $request->validate([
             'nama_toko'       => 'required|string|max:100',
@@ -78,17 +71,29 @@ class ProfileController extends Controller
         $jastiper->jangkauan = $request->jangkauan;
         $jastiper->save(); 
 
+        // ==== LOGIKA REKENING (PERBAIKAN DISINI) ====
         $rekening = $jastiper->rekening;
 
         $rekeningData = $request->only([
             'tipe_rekening', 'nama_penyedia', 'nama_pemilik', 'nomor_akun'
         ]);
 
-        if ($rekening) {
-            $rekening->update($rekeningData);
-        } elseif (array_filter($rekeningData)) { 
+        // Cek jika user mengisi setidaknya satu kolom rekening
+        if (array_filter($rekeningData)) {
             
-            Auth::user()->rekenings()->create($rekeningData);
+            if ($rekening) {
+                // KASUS 1: Rekening sudah ada sebelumnya -> Update saja
+                $rekening->update($rekeningData);
+            } else {
+                // KASUS 2: Rekening belum ada -> Buat Baru & Hubungkan
+                
+                // 1. Buat data rekening baru
+                $newRekening = Auth::user()->rekenings()->create($rekeningData);
+
+                // 2. Hubungkan Jastiper ke Rekening baru tersebut (PENTING!)
+                $jastiper->rekening_id = $newRekening->id;
+                $jastiper->save();
+            }
         }
 
         return redirect()

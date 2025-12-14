@@ -69,6 +69,7 @@ Route::get('/produk/{id}', [AuthController::class, 'showProductDetail'])->name('
 |--------------------------------------------------------------------------
 */
 
+
 Route::get('/login',    [AuthController::class, 'loginForm'])->name('login');
 Route::post('/login',   [AuthController::class, 'login'])->name('login.post');
 
@@ -84,6 +85,12 @@ Route::post('/notifikasi/read-all', [NotifikasiController::class, 'markAllAsRead
 
 Route::delete('/notifikasi/{notification}', [NotifikasiController::class, 'destroy'])->name('notifikasi.destroy');
 
+Route::get('/tatacara-belanja', function () {
+    return view('user.cara-belanja.index');
+})->name('cara-belanja');
+Route::get('/tentang-kami', function () {
+    return view('user.tentang-kami.index');
+})->name('tentang-kami');
 /*
 |--------------------------------------------------------------------------
 | AUTHENTICATED USER ROUTES
@@ -191,6 +198,11 @@ Route::middleware(['auth', 'role:admin'])
 Route::middleware(['auth', 'role:jastiper'])
     ->prefix('jastiper')->name('jastiper.')
     ->group(function () {
+
+
+        Route::get('/bantuan-jastiper', function () {
+            return view('jastiper.bantuan.index');
+        })->name('bantuan-jastiper');
 
         // Dashboard
         Route::get('/dashboard', [DashboardJastiperController::class, 'index'])

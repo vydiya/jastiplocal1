@@ -1,7 +1,10 @@
 @props(['isLoggedIn' => false, 'cartCount' => 0, 'searchValue' => '', 'userName' => 'Pengguna'])
+
 @php
     use Illuminate\Support\Str;
-    // Ambil notifikasi unread
+    use Illuminate\Support\Facades\Route;
+
+    // Ambil notifikasi unread jika user login
     $notifications = $isLoggedIn ? auth()->user()->unreadNotifications : collect([]);
     $notifCount = $notifications->count();
 @endphp
@@ -53,7 +56,8 @@
     
     .icon-link { 
         font-size: 1.35rem; color: var(--text-color); position: relative; 
-        transition: .2s; cursor: pointer; display: flex; 
+        transition: .2s; cursor: pointer; display: flex; align-items: center;
+        text-decoration: none;
     }
     .icon-link:hover { color: var(--primary-color); }
 
@@ -167,6 +171,14 @@
         <nav class="header-nav">
             <div class="nav-icon-wrapper">
 
+                 <a href="{{ Route::has('tentang-kami') ? route('tentang-kami') : '#' }}" class="icon-link" title="Tentang Kami">
+                    <i class="fas fa-info-circle"></i>
+                </a>
+
+                <a href="{{ Route::has('cara-belanja') ? route('cara-belanja') : '#' }}" class="icon-link" title="Bantuan / Cara Belanja">
+                    <i class="fas fa-question-circle"></i>
+                </a>
+
                 <a href="{{ $isLoggedIn ? route('keranjang.index') : route('login') }}" class="icon-link" title="Keranjang">
                     <i class="fas fa-shopping-cart"></i>
                     @if ($cartCount > 0)
@@ -176,7 +188,7 @@
 
                 @if ($isLoggedIn)
                     <div class="notif-wrapper" id="notifDropdown">
-                        <div class="icon-link notif-toggle">
+                        <div class="icon-link notif-toggle" title="Notifikasi">
                             <i class="fas fa-bell"></i>
                             @if ($notifCount > 0)
                                 <span class="badge-count" id="notifBadge">{{ $notifCount }}</span>
@@ -204,7 +216,7 @@
                                         <a href="{{ isset($notif->data['pesanan_id']) ? route('pesanan.riwayat') : '#' }}" 
                                            class="notif-item unread"
                                            onclick="markAsRead('{{ $notif->id }}')">
-                                           
+                                            
                                             <div class="notif-title">
                                                 {{ $notif->data['jenis_notifikasi'] ?? 'Info Sistem' }}
                                             </div>

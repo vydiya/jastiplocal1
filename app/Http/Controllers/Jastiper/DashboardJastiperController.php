@@ -19,7 +19,7 @@ class DashboardJastiperController extends Controller
         $jastiper = $user->jastiper;
 
         if (!$jastiper) {
-            abort(403, 'Anda bukan Jastiper.');
+            abort(403, 'Anda bukan jastiper.');
         }
         
         $jastiperId = $jastiper->id;
