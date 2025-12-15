@@ -52,7 +52,7 @@ class PesananController extends Controller
         
         $pesanans = $query->paginate(15)->withQueryString();
 
-        return view('jastiper.pesanan.index', compact('pesanans','q', 'status')); 
+        return view('Jastiper.pesanan.index', compact('pesanans','q', 'status')); 
     }
     public function showData(Pesanan $pesanan)
     {
