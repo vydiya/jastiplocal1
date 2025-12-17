@@ -7,12 +7,9 @@
         $user = Auth::user();
 
         // 2. Ambil data profil Jastiper-nya
-        // Asumsi: Di model User ada relasi 'public function jastiper() { return $this->hasOne(Jastiper::class); }'
         $jastiper = $user->jastiper;
 
         // 3. Logika Pengambilan Notifikasi
-        // Jika dia punya profil Jastiper, ambil notifikasi milik Jastiper.
-        // Jika tidak, kosongkan koleksi.
         if ($jastiper) {
             $notifications = $jastiper->unreadNotifications;
         } else {
@@ -31,7 +28,7 @@
             height: 100%;
             /* Mengisi tinggi header */
             gap: 25px;
-            /* Jarak antar elemen (Notif dengan Profile) */
+            /* Jarak antar elemen */
             padding-right: 15px;
         }
 
@@ -51,7 +48,6 @@
             transition: background 0.3s;
             color: #555;
             display: flex;
-            /* Agar icon di dalamnya center */
             align-items: center;
             justify-content: center;
         }
@@ -64,7 +60,6 @@
 
         .notif-icon-btn i {
             font-size: 1.3rem;
-            /* Ukuran icon lonceng */
         }
 
         /* Badge Merah */
@@ -84,7 +79,6 @@
         }
 
         /* --- Styling User Profile --- */
-        /* Saya hapus margin-top:15px yang bikin berantakan tadi */
         .user-profile-wrapper {
             display: flex;
             align-items: center;
@@ -102,7 +96,6 @@
             background: rgba(0, 0, 0, 0.05);
         }
 
-        /* Menambahkan icon user kecil biar lebih manis */
         .user-avatar-small {
             width: 32px;
             height: 32px;
@@ -115,11 +108,10 @@
             font-size: 0.9rem;
         }
 
-        /* --- Styling Dropdown (Sama seperti sebelumnya) --- */
+        /* --- Styling Dropdown --- */
         .notif-dropdown-menu {
             position: absolute;
             top: 90%;
-            /* Muncul sedikit di bawah header */
             right: 0;
             width: 320px;
             background: #fff;
@@ -201,6 +193,21 @@
             opacity: 0;
             transition: 0.3s;
         }
+
+        /* --- STYLING KHUSUS LINK BANTUAN --- */
+        .help-link {
+            text-decoration: none;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s;
+        }
+        .help-link:hover {
+            color: #006FFF;
+        }
     </style>
 
     <div class="top-left">
@@ -220,6 +227,18 @@
 
     <div class="top-right">
         <div class="header-menu">
+
+            {{-- =========================================== --}}
+            {{-- MENU BANTUAN (HANYA UNTUK JASTIPER) --}}
+            {{-- =========================================== --}}
+            @if ($user && $user->role === 'jastiper')
+                <a href="{{ route('jastiper.bantuan-jastiper') }}" class="help-link">
+                    <i class="fa fa-question-circle" style="font-size: 1.1rem;"></i>
+                    Bantuan
+                </a>
+            @endif
+            {{-- =========================================== --}}
+
 
             <div class="notif-wrapper-admin" id="adminNotifTrigger">
                 <div class="notif-icon-btn">

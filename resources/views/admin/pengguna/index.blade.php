@@ -141,9 +141,9 @@
         </div>
 
         {{-- PAGINATION --}}
-        <div class="mt-3">
+        {{-- <div class="mt-3">
             {{ $users->links() }}
-        </div>
+        </div> --}}
 
     </div>
 @endsection

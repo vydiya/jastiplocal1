@@ -1,0 +1,15 @@
+/* =====================================================
+   GLOBAL FIX PAGINATION
+   HANYA HILANGKAN SVG PANAH BESAR
+   TANPA GANGGU FUNGSI LAIN
+   ===================================================== */
+
+/* target khusus pagination Laravel */
+nav[role="navigation"] svg {
+    display: none !important;
+}
+
+/* cegah svg bocor ke bawah halaman */
+nav[role="navigation"] {
+    overflow: hidden;
+}

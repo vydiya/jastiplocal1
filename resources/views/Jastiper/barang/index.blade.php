@@ -113,7 +113,7 @@
         </div>
 
         <div class="mt-3">
-            {{ $barangs->withQueryString()->links() }}
+            {{ $barangs->withQueryString()->links('pagination::simple-bootstrap-4') }}
         </div>
 
     </div>

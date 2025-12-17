@@ -147,7 +147,18 @@
             color: white;
             border-color: #006FFF;
         }
-        
+        /* FIX BULLET PAGINATION (USER ONLY) */
+.pagination,
+.pagination ul {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin: 0;
+}
+
+.pagination li {
+    list-style: none !important;
+}
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
@@ -313,9 +324,10 @@
                 @endforelse
             </div>
 
-            <div class="pagination">
-                {{ $semuaProduk->appends(request()->query())->links() }}
-            </div>
+      <div class="pagination user-pagination">
+    {{ $semuaProduk->appends(request()->query())->links('pagination.user') }}
+       </div>
+
         </section>
     </main>
 
